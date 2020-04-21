@@ -1,6 +1,6 @@
 ﻿@model Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Models.FeedbackTeamViewModel
 
-@using (Ajax.BeginForm("ParseAndSaveFeedbackTeamIdAsync", "Home", new AjaxOptions { HttpMethod = "GET", OnSuccess = "onSaveSuccess", OnFailure = "onSaveFailure" }, htmlAttributes: new { @class = "formToSubmit" }))
+@using (Ajax.BeginForm("ParseAndSaveFeedbackTeamIdAsync", "Home", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSaveSuccess", OnFailure = "onSaveFailure" }, htmlAttributes: new { @class = "formToSubmit" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-group" data-form-name="feedbackteam">
