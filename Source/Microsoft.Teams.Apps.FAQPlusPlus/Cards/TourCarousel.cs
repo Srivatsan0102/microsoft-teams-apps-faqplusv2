@@ -42,6 +42,21 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
             };
         }
 
+        /// <summary>
+        /// Create the set of cards that comprise the feedback team tour carousel.
+        /// </summary>
+        /// <param name="appBaseUri">The base URI where the app is hoster.</param>
+        /// <returns>The cards that comprise the feedback team tour.</returns>
+        public static IEnumerable<Attachment> GetFeedbackTeamTourCards(string appBaseUri)
+        {
+            return new List<Attachment>()
+            {
+                GetCard("Share Feedback!","You can access the shared feedback from the user!", appBaseUri + "/content/Sharefeedback.png"),
+                GetCard("Share Feedback!", "You can also chat with the users in a 1 on 1 scope conversation!", appBaseUri + "/content/Askaquestion.png"),
+
+            };
+        }
+
         private static Attachment GetCard(string title, string text, string imageUri)
         {
             HeroCard tourCarouselCard = new HeroCard()

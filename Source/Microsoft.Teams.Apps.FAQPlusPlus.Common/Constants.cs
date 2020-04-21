@@ -70,6 +70,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common
         /// </summary>
         public const string TakeATour = "take a tour";
 
+        ///<summary>
+        /// FeedbackTour - text that triggers take a feedback tour action.
+        /// </summary>
+
+        public const string FeedbackTakeATour = "feedback tour";
+
         /// <summary>
         /// AskAnExpert - text that renders the ask an expert card.
         /// </summary>

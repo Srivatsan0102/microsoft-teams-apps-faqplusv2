@@ -829,6 +829,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                         await turnContext.SendActivityAsync(MessageFactory.Carousel(teamTourCards)).ConfigureAwait(false);
                         break;
 
+                    case Constants.FeedbackTakeATour:
+                        this.logger.LogInformation("Sending feedback team tour card");
+                        var feedbackTeamTourCards = TourCarousel.GetFeedbackTeamTourCards(this.appBaseUri);
+                        await turnContext.SendActivityAsync(MessageFactory.Carousel(feedbackTeamTourCards)).ConfigureAwait(false);
+                        break;
+
                     case ChangeStatus:
                         this.logger.LogInformation($"Card submit in channel {message.Value?.ToString()}");
                         await this.OnAdaptiveCardSubmitInChannelAsync(message, turnContext, cancellationToken).ConfigureAwait(false);

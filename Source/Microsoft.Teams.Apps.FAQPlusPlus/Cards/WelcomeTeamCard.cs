@@ -48,6 +48,21 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                             },
                         },
                     },
+
+                    // Feedback Team-take a tour submit action,
+                    new AdaptiveSubmitAction
+                    {
+                        Title = Strings.TakeATeamTourButtonText,
+                        Data = new TeamsAdaptiveSubmitActionData
+                        {
+                            MsTeams = new CardAction
+                            {
+                                Type = ActionTypes.MessageBack,
+                                DisplayText = "Feedback Tour",// Strings.TakeATeamTourButtonText
+                                Text = Constants.FeedbackTakeATour,
+                            },
+                        },
+                    },
                 },
             };
 
