@@ -886,6 +886,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             CancellationToken cancellationToken)
         {
             Attachment smeTeamCard = null;      // Notification to SME team
+            Attachment feedbackTeamCard = null; // Notification to Feedback Team
             Attachment userCard = null;         // Acknowledgement to the user
             TicketEntity newTicket = null;      // New ticket
 
@@ -916,8 +917,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
                 case ShareFeedbackCard.ShareFeedbackSubmitText:
                     this.logger.LogInformation("Received app feedback");
-                    smeTeamCard = await AdaptiveCardHelper.ShareFeedbackSubmitText(message, turnContext, cancellationToken).ConfigureAwait(false);
-                    if (smeTeamCard != null)
+                    feedbackTeamCard = await AdaptiveCardHelper.ShareFeedbackSubmitText(message, turnContext, cancellationToken).ConfigureAwait(false);
+                    if (feedbackTeamCard != null)
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
                     }
@@ -929,7 +930,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     break;
             }
 
-            string expertTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false);
+            string expertTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
 
             // Send message to SME team.
             if (smeTeamCard != null)
@@ -949,6 +950,14 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             if (userCard != null)
             {
                 await turnContext.SendActivityAsync(MessageFactory.Attachment(userCard), cancellationToken).ConfigureAwait(false);
+            }
+
+            string feedbackTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false);
+
+            // Send message to Feedback Team
+            if (feedbackTeamCard != null)
+            {
+                await this.SendCardToTeamAsync(turnContext, feedbackTeamCard, feedbackTeamId, cancellationToken).ConfigureAwait(false);
             }
         }
 

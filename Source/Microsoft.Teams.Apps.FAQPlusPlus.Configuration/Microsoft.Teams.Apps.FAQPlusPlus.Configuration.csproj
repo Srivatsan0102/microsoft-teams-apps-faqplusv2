@@ -271,6 +271,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\FeedbackTeamViewModel.cs" />
     <Compile Include="Models\KnowledgeBaseViewModel.cs" />
     <Compile Include="Models\HelpTabViewModel.cs" />
     <Compile Include="Models\TeamViewModel.cs" />
@@ -329,6 +330,7 @@
     </None>
     <Content Include="Views\Home\_HelpTab.cshtml" />
     <Content Include="Views\Shared\_Spinner.cshtml" />
+    <Content Include="Views\Home\_FeedbackTeam.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx">

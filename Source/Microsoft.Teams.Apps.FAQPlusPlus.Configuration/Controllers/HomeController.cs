@@ -133,6 +133,16 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         }
 
         /// <summary>
+        /// Get already saved feedback team id from table storage.
+        /// </summary>
+        /// <returns>Feedback Team id.</returns>
+        [HttpGet]
+        public async Task<string> GetSavedFeedbackTeamIdAsync()
+        {
+            return await this.configurationPovider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Save or update knowledgeBaseId in table storage which is received from View.
         /// </summary>
         /// <param name="knowledgeBaseId">knowledgeBaseId is the unique string to identify knowledgebase.</param>

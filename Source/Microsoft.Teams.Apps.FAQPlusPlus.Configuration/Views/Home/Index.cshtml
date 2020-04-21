@@ -12,8 +12,6 @@
                 @Html.Partial("~/Views/Home/_Team.cshtml")
             </div>
         </div>
-        
-        
         <div class="col-lg-12 marginBetweenView">
             <hr />
         </div>
@@ -38,9 +36,16 @@
                 @Html.Partial("~/Views/Home/_HelpTab.cshtml")
             </div>
         </div>
-    </div>
+        <div class="col-lg-12 marginBetweenView">
+            <hr />
+            <div class="col-lg-12">
+                <div class="col-lg-8">
+                    @Html.Partial("~/Views/Home/_FeedbackTeam.cshtml")
+                </div>
+            </div>
+        </div>
 
-<script type="text/javascript">
+        <script type="text/javascript">
     $(function () {
         //Display team id if its saved if yes then perform edit UI changes
         $.ajax({
@@ -54,6 +59,22 @@
             },
             error: function (error) {
                 saveFailureIconAndText("teamStorageStatusIcon", "teamStorageStatusMessage", "Unable to display team id due to HTTP: " + error.status + ", " + error.statusText);
+            }
+        });
+
+        $(function () {
+        //Display feedback team id if its saved if yes then perform edit UI changes
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetSavedFeedbackTeamIdAsync")',
+            success: function (result) {
+                if (result != "") {                //Display the default UI when no team id results are available for display
+                    $(".feedbackTeamIdTextBox").val(result);
+                    toggleToEdit("feedbackteam");
+                }
+            },
+            error: function (error) {
+                saveFailureIconAndText("teamStorageStatusIcon", "teamStorageStatusMessage", "Unable to display feedback team id due to HTTP: " + error.status + ", " + error.statusText);
             }
         });
 
@@ -86,6 +107,9 @@
                 saveFailureIconAndText("welcomeMessageStorageStatusIcon", "welcomeMessageStorageStatusMessage", "Unable to display welcome message due to HTTP: " + error.status + ", " + error.statusText);
             }
         });
+
+
+
 
         //Display help tab message text if its saved if yes then perform edit UI changes
         $.ajax({
@@ -164,4 +188,4 @@
     $(document).ajaxStop(function () {
         $("#spinner").hide();
     });
-</script>
+        </script>
