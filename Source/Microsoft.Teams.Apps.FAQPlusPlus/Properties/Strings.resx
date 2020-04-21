@@ -392,7 +392,7 @@ I am your friendly Q&amp;A bot that helps you provide support to people who inte
     <comment>Unhelpful: available feedback rating scale.</comment>
   </data>
   <data name="ViewArticleButtonText" xml:space="preserve">
-    <value>View article</value>
+    <value>View Answer from bot</value>
     <comment>The necessary string for the view article button</comment>
   </data>
   <data name="SMEFeedbackHeaderText" xml:space="preserve">
