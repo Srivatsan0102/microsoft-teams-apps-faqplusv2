@@ -929,7 +929,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     break;
             }
 
-            string expertTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
+            string expertTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false);
 
             // Send message to SME team.
             if (smeTeamCard != null)

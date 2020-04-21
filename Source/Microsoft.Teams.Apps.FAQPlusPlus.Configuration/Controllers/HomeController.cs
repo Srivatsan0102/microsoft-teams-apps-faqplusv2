@@ -64,6 +64,26 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         }
 
         /// <summary>
+        /// Parse team id from first and then proceed to save it on success.
+        /// </summary>
+        /// <param name="feedbackTeamId">Feedback Team id is the unique string.</param>
+        /// <returns>View.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ParseAndSaveFeedbackTeamIdAsync(string feedbackTeamId = "")
+        {
+            string feedbackTeamIdAfterParse = ParseTeamIdFromDeepLink(feedbackTeamId ?? string.Empty);
+            if (string.IsNullOrWhiteSpace(feedbackTeamId))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "The provided team id is not valid");
+            }
+            else
+            {
+                return await this.UpsertFeedbackTeamIdAsync(feedbackTeamIdAfterParse).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
         /// Save or update teamId in table storage which is received from View.
         /// </summary>
         /// <param name="teamId">Team id is the unique deep link URL string associated with each team.</param>
@@ -80,6 +100,25 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
             else
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Sorry, unable to save the team id due to an internal error. Try again.");
+            }
+        }
+        /// <summary>
+        /// Save or update teamId in table storage which is received from View.
+        /// </summary>
+        /// <param name="feedbackTeamID">Feedback Team id is the unique deep link URL string associated with each team.</param>
+        /// <returns>View.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpsertFeedbackTeamIdAsync(string feedbackTeamID)
+        {
+            bool isSaved = await this.configurationPovider.UpsertEntityAsync(feedbackTeamID, ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false);
+            if (isSaved)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Sorry, unable to save the feedback team id due to an internal error. Try again.");
             }
         }
 
