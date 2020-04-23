@@ -90,7 +90,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a team id deeplink which will be used for the feedback team and then click on Ok to add or Edit to modify.
+        ///   Looks up a localized string similar to Provide a team id deeplink which will be used by the feedback team and then click on Ok to add or Edit to modify.
         /// </summary>
         public static string FeedbackTeamIdToolHoverMessage {
             get {

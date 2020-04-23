@@ -137,7 +137,7 @@ You can ask the following questions:
     <comment>Default welcome message text to be stored in configuration app</comment>
   </data>
   <data name="FeedbackTeamIdToolHoverMessage" xml:space="preserve">
-    <value>Provide a team id deeplink which will be used for the feedback team and then click on Ok to add or Edit to modify</value>
+    <value>Provide a team id deeplink which will be used by the feedback team and then click on Ok to add or Edit to modify</value>
     <comment>Message for feedback team id when information icon is hovered</comment>
   </data>
   <data name="HelpTabTextToolTipHoverMessage" xml:space="preserve">
