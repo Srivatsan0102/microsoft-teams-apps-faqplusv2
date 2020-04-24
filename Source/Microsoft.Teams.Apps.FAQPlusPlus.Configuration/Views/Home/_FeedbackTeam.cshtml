@@ -13,14 +13,14 @@
             @Html.ValidationMessageFor(model => model.FeedbackTeamId, "", htmlAttributes: new { @class = "error-message" })
         </div>
         <div class="col-lg-1">
-            <span id="feedbackteamStorageStatusIcon"></span>
+            <span id="teamStorageStatusIcon"></span>
         </div>
         <div class="col-lg-3">
             <input type="button" value="OK" class="btn btn-primary toggleToEditButton" id="feedbackTeamSubmitButton" />
-            <span class="glyphicon glyphicon-info-sign infoSignMargin" data-toggle="tooltip" title="@Strings.FeedbackTeamIdToolHoverMessage"></span>
+            <span class="glyphicon glyphicon-info-sign infoSignMargin" data-toggle="tooltip" title="@Strings.TeamIdToolTipHoverMessage"></span>
         </div>
         <div class="col-lg-offset-3 col-lg-5">
-            <div id="feedbackteamStorageStatusMessage" class="error-message"></div>
+            <div id="teamStorageStatusMessage" class="error-message"></div>
         </div>
     </div>
 }

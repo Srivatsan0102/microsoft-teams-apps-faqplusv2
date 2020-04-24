@@ -90,15 +90,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide a team id deeplink which will be used for the feedback team and then click on Ok to add or Edit to modify.
-        /// </summary>
-        public static string FeedbackTeamIdToolHoverMessage {
-            get {
-                return ResourceManager.GetString("FeedbackTeamIdToolHoverMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Provide text which will be displayed in Help tab of the bot and then click on Ok to add or Edit to modify.
         /// </summary>
         public static string HelpTabTextToolTipHoverMessage {
