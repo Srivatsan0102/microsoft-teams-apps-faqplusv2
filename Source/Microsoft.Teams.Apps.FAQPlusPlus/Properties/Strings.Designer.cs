@@ -907,6 +907,15 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feedback Team Tour.
+        /// </summary>
+        public static string TakeAFeedbackTeamTourButtonText {
+            get {
+                return ResourceManager.GetString("TakeAFeedbackTeamTourButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team tour.
         /// </summary>
         public static string TakeATeamTourButtonText {

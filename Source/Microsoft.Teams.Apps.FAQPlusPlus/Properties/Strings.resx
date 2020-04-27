@@ -594,4 +594,8 @@ I am your friendly Q&amp;A bot that helps you provide support to people who inte
 
 I am your friendly share feedback bot! I will take your feedback and send it to our team so that they can in improving my job! </value>
   </data>
+  <data name="TakeAFeedbackTeamTourButtonText" xml:space="preserve">
+    <value>Feedback Team Tour</value>
+    <comment>Action button which gives tour for the feedback team on bot Functionalities.</comment>
+  </data>
 </root>

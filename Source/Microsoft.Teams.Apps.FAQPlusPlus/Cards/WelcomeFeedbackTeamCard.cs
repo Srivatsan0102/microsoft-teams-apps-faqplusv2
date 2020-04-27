@@ -43,6 +43,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                             MsTeams = new CardAction
                             {
                                 Type = ActionTypes.MessageBack,
+                                DisplayText = Strings.TakeAFeedbackTeamTourButtonText,
                                 Text = Constants.FeedbackTeamTour,
                             },
                         },
