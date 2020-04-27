@@ -746,7 +746,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 var botDisplayName = turnContext.Activity.Recipient.Name;
                 var teamWelcomeCardAttachment = WelcomeTeamCard.GetCard();
                 var teamWelcomeFeedbackCardAttachment = WelcomeFeedbackTeamCard.GetCard();
-                if (teamDetails.Team.Name.Contains("Feedback") || teamDetails.Team.Name.Contains("feedback"))
+                if (teamDetails.Team.Name.Contains(Strings.FeedbackCheckOne) || teamDetails.Team.Name.Contains(Strings.FeedbackCheckTwo))
                 {
                     await this.SendCardToTeamAsync(turnContext, teamWelcomeFeedbackCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
                 }

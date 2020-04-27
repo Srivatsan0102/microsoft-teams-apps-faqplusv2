@@ -598,4 +598,12 @@ I am your friendly share feedback bot! I will take your feedback and send it to 
     <value>Feedback Team Tour</value>
     <comment>Action button which gives tour for the feedback team on bot Functionalities.</comment>
   </data>
+  <data name="FeedbackCheckOne" xml:space="preserve">
+    <value>Feedback</value>
+    <comment>Check if it's a feedback team or not</comment>
+  </data>
+  <data name="FeedbackCheckTwo" xml:space="preserve">
+    <value>feedback</value>
+    <comment>Check if it's a feedback team or not</comment>
+  </data>
 </root>

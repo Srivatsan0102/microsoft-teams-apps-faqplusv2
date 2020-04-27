@@ -403,6 +403,24 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feedback.
+        /// </summary>
+        public static string FeedbackCheckOne {
+            get {
+                return ResourceManager.GetString("FeedbackCheckOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to feedback.
+        /// </summary>
+        public static string FeedbackCheckTwo {
+            get {
+                return ResourceManager.GetString("FeedbackCheckTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter your feedback and supporting details here (500 characters max).
         /// </summary>
         public static string FeedbackDescriptionPlaceholderText {
