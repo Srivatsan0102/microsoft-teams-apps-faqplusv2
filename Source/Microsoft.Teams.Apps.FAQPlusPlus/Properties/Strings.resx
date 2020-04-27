@@ -589,4 +589,9 @@ I am your friendly Q&amp;A bot that helps you provide support to people who inte
     <value>Date</value>
     <comment>Date header text in update history adaptive card text.</comment>
   </data>
+  <data name="WelcomeFeedbackTeamCardContent" xml:space="preserve">
+    <value>Hello team,   
+
+I am your friendly share feedback bot! I will take your feedback and send it to our team so that they can in improving my job! </value>
+  </data>
 </root>

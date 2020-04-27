@@ -745,7 +745,16 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 var teamDetails = ((JObject)turnContext.Activity.ChannelData).ToObject<TeamsChannelData>();
                 var botDisplayName = turnContext.Activity.Recipient.Name;
                 var teamWelcomeCardAttachment = WelcomeTeamCard.GetCard();
-                await this.SendCardToTeamAsync(turnContext, teamWelcomeCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
+                var teamWelcomeFeedbackCardAttachment = WelcomeFeedbackTeamCard.GetCard();
+                if (teamDetails.Team.Name.Contains("Feedback") || teamDetails.Team.Name.Contains("feedback"))
+                {
+                    await this.SendCardToTeamAsync(turnContext, teamWelcomeFeedbackCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    await this.SendCardToTeamAsync(turnContext, teamWelcomeCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
+                }
+
             }
         }
 
@@ -827,6 +836,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                         this.logger.LogInformation("Sending team tour card");
                         var teamTourCards = TourCarousel.GetTeamTourCards(this.appBaseUri);
                         await turnContext.SendActivityAsync(MessageFactory.Carousel(teamTourCards)).ConfigureAwait(false);
+                        break;
+
+                    case Constants.FeedbackTeamTour:
+                        this.logger.LogInformation("Sending feedback team tour card");
+                        var feedbackTeamTourCards = TourCarousel.GetFeedbackTeamTourCards(this.appBaseUri);
+                        await turnContext.SendActivityAsync(MessageFactory.Carousel(feedbackTeamTourCards)).ConfigureAwait(false);
                         break;
 
                     case ChangeStatus:

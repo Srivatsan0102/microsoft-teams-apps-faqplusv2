@@ -1078,7 +1078,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View article.
+        ///   Looks up a localized string similar to View Answer from bot.
         /// </summary>
         public static string ViewArticleButtonText {
             get {
@@ -1101,6 +1101,17 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         public static string WaitMessageAnswer {
             get {
                 return ResourceManager.GetString("WaitMessageAnswer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello team,   
+        ///
+        ///I am your friendly share feedback bot! I will take your feedback and send it to our team so that they can in improving my job! .
+        /// </summary>
+        public static string WelcomeFeedbackTeamCardContent {
+            get {
+                return ResourceManager.GetString("WelcomeFeedbackTeamCardContent", resourceCulture);
             }
         }
         
