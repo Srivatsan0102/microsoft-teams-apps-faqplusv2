@@ -70,7 +70,7 @@
             url: '@Url.Action("GetSavedFeedbackTeamIdAsync")',
             success: function (result) {
                 if (result != "") {                //Display the default UI when no team id results are available for display
-                    $(".feedbackTeamIdTextBox").val(result);
+                    $(".feedbackteamIdTextBox").val(result);
                     toggleToEdit("feedbackteam");
                 }
             },
