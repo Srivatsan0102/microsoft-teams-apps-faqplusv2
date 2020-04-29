@@ -788,10 +788,10 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     break;
 
                 case Constants.ShareFeedback:
-                    if (string.IsNullOrEmpty(await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false)))
+                    if (string.IsNullOrEmpty(await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId)) == true)
                     {
                         this.logger.LogInformation("Feedback Team ID not registered yet.");
-                        await turnContext.SendActivityAsync(MessageFactory.Text("I'm sorry, feedback team has not been registered yet."));
+                        await turnContext.SendActivityAsync(MessageFactory.Text("I'm sorry, feedback team has not been registered yet.", "I'm sorry, feedback team has not been registered yet."), cancellationToken).ConfigureAwait(false);
                         break;
                     }
                     else
