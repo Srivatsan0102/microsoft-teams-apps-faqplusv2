@@ -31,6 +31,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using ErrorResponseException = Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models.ErrorResponseException;
+    
 
     /// <summary>
     /// Class that handles the teams activity of Faq Plus bot and messaging extension.
@@ -787,9 +788,18 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     break;
 
                 case Constants.ShareFeedback:
-                    this.logger.LogInformation("Sending user feedback card");
-                    await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
-                    break;
+                    if (this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).Equals(string.Empty))
+                    {
+                        this.logger.LogInformation("Feedback Team ID not registered yet.");
+                        await turnContext.SendActivityAsync(MessageFactory.Text("I'm sorry, feedback team has not been registered yet."));
+                        break;
+                    }
+                    else
+                    {
+                        this.logger.LogInformation("Sending user feedback card");
+                        await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
+                        break;
+                    }
 
                 case Constants.TakeATour:
                     this.logger.LogInformation("Sending user tour card");
