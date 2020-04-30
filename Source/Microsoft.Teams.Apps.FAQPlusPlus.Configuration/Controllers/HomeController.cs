@@ -73,7 +73,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         public async Task<ActionResult> ParseAndSaveFeedbackTeamIdAsync(string feedbackTeamId = "")
         {
             string feedbackTeamIdAfterParse = ParseTeamIdFromDeepLink(feedbackTeamId ?? string.Empty);
-            if (string.IsNullOrWhiteSpace(feedbackTeamId))
+            if (string.IsNullOrWhiteSpace(feedbackTeamIdAfterParse))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "The provided team id is not valid");
             }
