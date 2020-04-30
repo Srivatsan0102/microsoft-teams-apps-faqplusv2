@@ -12,6 +12,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.ApplicationInsights.DataContracts;
+    using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
     using Microsoft.Bot.Builder;
     using Microsoft.Bot.Builder.Teams;
@@ -738,6 +739,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
            CancellationToken cancellationToken)
         {
             var activity = turnContext.Activity;
+            var expertID = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
             if (membersAdded.Any(channelAccount => channelAccount.Id == activity.Recipient.Id))
             {
                 // Bot was added to a team
@@ -747,15 +749,22 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 var botDisplayName = turnContext.Activity.Recipient.Name;
                 var teamWelcomeCardAttachment = WelcomeTeamCard.GetCard();
                 var teamWelcomeFeedbackCardAttachment = WelcomeFeedbackTeamCard.GetCard();
-                if (teamDetails.Team.Name.Contains(Strings.FeedbackCheckOne) || teamDetails.Team.Name.Contains(Strings.FeedbackCheckTwo))
+                /*if (teamDetails.Team.Name.Contains(Strings.FeedbackCheckOne) || teamDetails.Team.Name.Contains(Strings.FeedbackCheckTwo))
                 {
                     await this.SendCardToTeamAsync(turnContext, teamWelcomeFeedbackCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
                     await this.SendCardToTeamAsync(turnContext, teamWelcomeCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
+                }*/
+                if (teamDetails.Team.Id == expertID)
+                {
+                    await this.SendCardToTeamAsync(turnContext, teamWelcomeCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
                 }
-
+                else
+                {
+                    await this.SendCardToTeamAsync(turnContext, teamWelcomeFeedbackCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
+                }
             }
         }
 
@@ -788,10 +797,10 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     break;
 
                 case Constants.ShareFeedback:
-                    if (string.IsNullOrEmpty(await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId)) == true)
+                    if (string.IsNullOrEmpty(await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false)))
                     {
                         this.logger.LogInformation("Feedback Team ID not registered yet.");
-                        await turnContext.SendActivityAsync(MessageFactory.Text("I'm sorry, feedback team has not been registered yet.", "I'm sorry, feedback team has not been registered yet."), cancellationToken).ConfigureAwait(false);
+                        await turnContext.SendActivityAsync(MessageFactory.Text(Strings.FeedbackTeamUnregisteredMessage, Strings.FeedbackTeamUnregisteredMessage), cancellationToken).ConfigureAwait(false);
                         break;
                     }
                     else
