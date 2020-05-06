@@ -12,7 +12,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common.Models;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers;
-
+    
     /// <summary>
     /// Home Controller
     /// </summary>
@@ -64,7 +64,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         }
 
         /// <summary>
-        /// Parse team id from first and then proceed to save it on success.
+        /// Parse team id from the configuration web app and then proceed to save it to the azure table on success.
         /// </summary>
         /// <param name="feedbackTeamId">Feedback Team id is the unique string.</param>
         /// <returns>View.</returns>
@@ -73,7 +73,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         public async Task<ActionResult> ParseAndSaveFeedbackTeamIdAsync(string feedbackTeamId = "")
         {
             string feedbackTeamIdAfterParse = ParseTeamIdFromDeepLink(feedbackTeamId ?? string.Empty);
-            if (string.IsNullOrWhiteSpace(feedbackTeamId))
+            if (string.IsNullOrWhiteSpace(feedbackTeamIdAfterParse))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "The provided team id is not valid");
             }

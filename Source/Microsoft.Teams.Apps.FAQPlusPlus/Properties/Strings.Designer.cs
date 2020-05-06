@@ -439,6 +439,15 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to I&apos;m sorry, I don&apos;t think I can find the Team ID for submitting Feedback..
+        /// </summary>
+        public static string FeedbackTeamUnregisteredMessage {
+            get {
+                return ResourceManager.GetString("FeedbackTeamUnregisteredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tell my team of experts how I&apos;m doing so they can help me improve..
         /// </summary>
         public static string FeedbackText1 {
