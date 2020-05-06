@@ -12,7 +12,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.ApplicationInsights.DataContracts;
-    using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
     using Microsoft.Bot.Builder;
     using Microsoft.Bot.Builder.Teams;
@@ -32,7 +31,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using ErrorResponseException = Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models.ErrorResponseException;
-    
+
 
     /// <summary>
     /// Class that handles the teams activity of Faq Plus bot and messaging extension.
@@ -749,14 +748,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 var botDisplayName = turnContext.Activity.Recipient.Name;
                 var teamWelcomeCardAttachment = WelcomeTeamCard.GetCard();
                 var teamWelcomeFeedbackCardAttachment = WelcomeFeedbackTeamCard.GetCard();
-                /*if (teamDetails.Team.Name.Contains(Strings.FeedbackCheckOne) || teamDetails.Team.Name.Contains(Strings.FeedbackCheckTwo))
-                {
-                    await this.SendCardToTeamAsync(turnContext, teamWelcomeFeedbackCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    await this.SendCardToTeamAsync(turnContext, teamWelcomeCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
-                }*/
+                // We compare expertID obtained from the Azure table which was obtained from the configuration web app with the ID of the team in which the bot was added to.
                 if (teamDetails.Team.Id == expertID)
                 {
                     await this.SendCardToTeamAsync(turnContext, teamWelcomeCardAttachment, teamDetails.Team.Id, cancellationToken).ConfigureAwait(false);
@@ -800,7 +792,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     if (string.IsNullOrEmpty(await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false)))
                     {
                         this.logger.LogInformation("Feedback Team ID not registered yet.");
-                        await turnContext.SendActivityAsync(MessageFactory.Text(Strings.FeedbackTeamUnregisteredMessage, Strings.FeedbackTeamUnregisteredMessage), cancellationToken).ConfigureAwait(false);
+                        await turnContext.SendActivityAsync(MessageFactory.Text(Strings.FeedbackTeamUnregisteredMessage), cancellationToken).ConfigureAwait(false);
                         break;
                     }
                     else

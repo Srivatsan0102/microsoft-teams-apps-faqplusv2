@@ -64,7 +64,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         }
 
         /// <summary>
-        /// Parse team id from first and then proceed to save it on success.
+        /// Parse team id from the configuration web app and then proceed to save it to the azure table on success.
         /// </summary>
         /// <param name="feedbackTeamId">Feedback Team id is the unique string.</param>
         /// <returns>View.</returns>

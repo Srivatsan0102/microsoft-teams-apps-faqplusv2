@@ -439,7 +439,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I&apos;m sorry, feedback team has not been registered yet..
+        ///   Looks up a localized string similar to I&apos;m sorry, I don&apos;t think I can find the Team ID for submitting Feedback..
         /// </summary>
         public static string FeedbackTeamUnregisteredMessage {
             get {

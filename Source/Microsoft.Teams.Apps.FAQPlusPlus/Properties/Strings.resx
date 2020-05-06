@@ -607,7 +607,7 @@ I am your friendly share feedback bot! I will take your feedback and send it to 
     <comment>Check if it's a feedback team or not</comment>
   </data>
   <data name="FeedbackTeamUnregisteredMessage" xml:space="preserve">
-    <value>I'm sorry, feedback team has not been registered yet.</value>
+    <value>I'm sorry, I don't think I can find the Team ID for submitting Feedback.</value>
     <comment>If the user asks for feedback when the feedback team has not been configured, the bot will return this message.</comment>
   </data>
 </root>
