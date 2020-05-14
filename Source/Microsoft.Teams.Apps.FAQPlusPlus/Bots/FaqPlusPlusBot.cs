@@ -399,7 +399,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     };
                 }
 
-                /*if (teamsChannelData.Team.Name.Equals("Adoption Bot Feedback"))
+                else if (teamsChannelData.Team.Name.Equals("Adoption Bot Feedback"))
                 {
                     return new MessagingExtensionResponse
                     {
@@ -409,7 +409,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                             Type = "message",
                         },
                     };
-                }*/
+                }
 
                 return new MessagingExtensionResponse
                 {
