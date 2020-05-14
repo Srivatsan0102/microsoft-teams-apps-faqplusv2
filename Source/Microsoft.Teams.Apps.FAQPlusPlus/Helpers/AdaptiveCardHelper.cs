@@ -56,6 +56,39 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         }
 
         /// <summary>
+        /// Helps to get the feedback expert ticket details.
+        /// </summary>
+        /// <param name="message">A message in a conversation.</param>
+        /// <param name="turnContext">Context object containing information cached for a single turn of conversation with a user.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <param name="ticketsProvider">Feedback Tickets Provider.</param>
+        /// <returns>A task that represents the work queued to execute.</returns>
+        public static async Task<FeedbackTicketEntity> FeedbackTicketSubmitText(
+            IMessageActivity message,
+            ITurnContext<IMessageActivity> turnContext,
+            CancellationToken cancellationToken,
+            IFeedbackTicketsProvider ticketsProvider)
+        {
+            var feedbackTextPayload = ((JObject)message.Value).ToObject<ShareFeedbackCardPayload>();
+
+            // Validate required fields.
+            if (!Enum.TryParse(feedbackTextPayload?.Rating, out FeedbackRating rating))
+            {
+                var updateCardActivity = new Activity(ActivityTypes.Message)
+                {
+                    Id = turnContext.Activity.ReplyToId,
+                    Conversation = turnContext.Activity.Conversation,
+                    Attachments = new List<Attachment> { ShareFeedbackCard.GetCard(feedbackTextPayload) },
+                };
+                await turnContext.UpdateActivityAsync(updateCardActivity, cancellationToken).ConfigureAwait(false);
+                return null;
+            }
+
+            var userDetails = await GetUserDetailsInPersonalChatAsync(turnContext, cancellationToken).ConfigureAwait(false);
+            return await CreateFeedbackTicketAsync(message, feedbackTextPayload, userDetails, ticketsProvider).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Helps to get the expert submit card.
         /// </summary>
         /// <param name="message">A message in a conversation.</param>
@@ -106,6 +139,41 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
                 Status = (int)TicketState.Open,
                 DateCreated = DateTime.UtcNow,
                 Title = data.Title,
+                Description = data.Description,
+                RequesterName = member.Name,
+                RequesterUserPrincipalName = member.UserPrincipalName,
+                RequesterGivenName = member.GivenName,
+                RequesterConversationId = message.Conversation.Id,
+                LastModifiedByName = message.From.Name,
+                LastModifiedByObjectId = message.From.AadObjectId,
+                UserQuestion = data.UserQuestion,
+                KnowledgeBaseAnswer = data.KnowledgeBaseAnswer,
+            };
+
+            await ticketsProvider.UpsertTicketAsync(ticketEntity).ConfigureAwait(false);
+
+            return ticketEntity;
+        }
+
+        /// <summary>
+        /// Create a new feedback ticket from the input.
+        /// </summary>
+        /// <param name="message">A message in a conversation.</param>
+        /// <param name="data">Represents the submit data associated with the Share feedback card.</param>
+        /// <param name="member">Teams channel account detailing user Azure Active Directory details.</param>
+        /// <param name="ticketsProvider">Feedback Tickets Provider.</param>
+        /// <returns>Feedback TicketEntity object.</returns>
+        private static async Task<FeedbackTicketEntity> CreateFeedbackTicketAsync(
+           IMessageActivity message,
+           ShareFeedbackCardPayload data,
+           TeamsChannelAccount member,
+           IFeedbackTicketsProvider ticketsProvider)
+        {
+            FeedbackTicketEntity ticketEntity = new FeedbackTicketEntity
+            {
+                FeedbackTicketId = Guid.NewGuid().ToString(),
+                Status = (int)TicketState.Open,
+                DateCreated = DateTime.UtcNow,
                 Description = data.Description,
                 RequesterName = member.Name,
                 RequesterUserPrincipalName = member.UserPrincipalName,

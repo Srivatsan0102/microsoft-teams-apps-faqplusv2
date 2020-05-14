@@ -1,0 +1,28 @@
+﻿// <copyright file="IFeedbackTicketsProvider.cs" company="Microsoft">
+// Copyright (c) Microsoft. All rights reserved.
+// </copyright>
+namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
+{
+    using System.Threading.Tasks;
+    using Microsoft.Teams.Apps.FAQPlusPlus.Common.Models;
+
+    /// <summary>
+    /// Interface of Feedback Tickets provider.
+    /// </summary>
+    public interface IFeedbackTicketsProvider
+    {
+        /// <summary>
+        /// Save or update feedback ticket entity.
+        /// </summary>
+        /// <param name="ticket">Ticket received from bot based on which appropriate row will replaced or inserted in table storage.</param>
+        /// <returns><see cref="Task"/> that resolves successfully if the data was saved successfully.</returns>
+        Task UpsertTicketAsync(FeedbackTicketEntity ticket);
+
+        /// <summary>
+        /// Get already saved entity detail from storage table.
+        /// </summary>
+        /// <param name="ticketId">feedback ticket id received from bot based on which appropriate row data will be fetched.</param>
+        /// <returns><see cref="Task"/> Already saved entity detail.</returns>
+        Task<FeedbackTicketEntity> GetTicketAsync(string ticketId);
+    }
+}

@@ -90,6 +90,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         private readonly IKnowledgeBaseSearchService knowledgeBaseSearchService;
         private readonly ILogger<FaqPlusPlusBot> logger;
         private readonly IQnaServiceProvider qnaServiceProvider;
+        private readonly IFeedbackTicketsProvider feedbackTicketsProvider;
+        private readonly IFeedbackSearchService feedbackSearchService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FaqPlusPlusBot"/> class.
@@ -116,7 +118,9 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             IMemoryCache memoryCache,
             IKnowledgeBaseSearchService knowledgeBaseSearchService,
             IOptionsMonitor<BotSettings> optionsAccessor,
-            ILogger<FaqPlusPlusBot> logger)
+            ILogger<FaqPlusPlusBot> logger,
+            IFeedbackTicketsProvider feedbackTicketsProvider,
+            IFeedbackSearchService feedbackSearchService)
         {
             this.configurationProvider = configurationProvider;
             this.microsoftAppCredentials = microsoftAppCredentials;
@@ -130,6 +134,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             this.accessCache = memoryCache;
             this.logger = logger;
             this.accessCacheExpiryInDays = this.options.AccessCacheExpiryInDays;
+            this.feedbackTicketsProvider = feedbackTicketsProvider;
+            this.feedbackSearchService = feedbackSearchService;
 
             if (this.accessCacheExpiryInDays <= 0)
             {
@@ -386,6 +392,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             {
                 turnContextActivity.TryGetChannelData<TeamsChannelData>(out var teamsChannelData);
                 string expertTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
+                string feedbackTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false);
 
                 if (turnContext != null && teamsChannelData?.Team?.Id == expertTeamId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
                 {
@@ -395,6 +402,16 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     return new MessagingExtensionResponse
                     {
                         ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
+                    };
+                }
+                else if (turnContext != null && teamsChannelData?.Team?.Id == feedbackTeamId)
+                {
+                    var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
+                    var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
+
+                    return new MessagingExtensionResponse
+                    {
+                        ComposeExtension = await SearchFeedbackHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.feedbackSearchService, this.activityStorageProvider).ConfigureAwait(false),
                     };
                 }
 
@@ -904,6 +921,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             Attachment feedbackTeamCard = null; // Notification to Feedback Team
             Attachment userCard = null;         // Acknowledgement to the user
             TicketEntity newTicket = null;      // New ticket
+            FeedbackTicketEntity feedbackTicket = null; // New feedback ticket
 
             switch (message?.Text)
             {
@@ -933,6 +951,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 case ShareFeedbackCard.ShareFeedbackSubmitText:
                     this.logger.LogInformation("Received app feedback");
                     feedbackTeamCard = await AdaptiveCardHelper.ShareFeedbackSubmitText(message, turnContext, cancellationToken).ConfigureAwait(false);
+                    feedbackTicket = await AdaptiveCardHelper.FeedbackTicketSubmitText(message, turnContext, cancellationToken, this.feedbackTicketsProvider).ConfigureAwait(false);
                     if (feedbackTeamCard != null)
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
@@ -973,6 +992,20 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             if (feedbackTeamCard != null)
             {
                 await this.SendCardToTeamAsync(turnContext, feedbackTeamCard, feedbackTeamId, cancellationToken).ConfigureAwait(false);
+            }
+
+            // Send feedback ticket information to azure.
+            if (feedbackTeamCard != null)
+            {
+                var resourceResponse = await this.SendCardToTeamAsync(turnContext, feedbackTeamCard, feedbackTeamId, cancellationToken).ConfigureAwait(false);
+
+                if (feedbackTicket != null)
+                {
+                    feedbackTicket.FeedbackCardActivityId = resourceResponse.ActivityId;
+                    feedbackTicket.FeedbackThreadConversationId = resourceResponse.Id;
+                    await this.feedbackTicketsProvider.UpsertTicketAsync(feedbackTicket).ConfigureAwait(false);
+                }
+
             }
         }
 
