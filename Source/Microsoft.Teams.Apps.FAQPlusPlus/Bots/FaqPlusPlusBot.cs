@@ -400,13 +400,21 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 }
                 else if (teamsChannelData.Team.Id.Equals("19:e1f86d6b537d40ef86cdc187613659a6@thread.tacv2"))
                 {
+                    /* return new MessagingExtensionResponse
+                     {
+                         ComposeExtension = new MessagingExtensionResult
+                         {
+                             Text = "Welcome to the Share feedback messaging extension!",
+                             Type = "message",
+                         },
+                     }; */
+
+                    var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
+                    var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
+
                     return new MessagingExtensionResponse
                     {
-                        ComposeExtension = new MessagingExtensionResult
-                        {
-                            Text = "Welcome to the Share feedback messaging extension!",
-                            Type = "message",
-                        },
+                        ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
                     };
                 }
 
