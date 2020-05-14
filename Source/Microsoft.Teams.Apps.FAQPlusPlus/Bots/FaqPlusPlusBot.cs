@@ -411,7 +411,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
                     return new MessagingExtensionResponse
                     {
-                        ComposeExtension = await SearchFeedbackHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.feedbackSearchService, this.activityStorageProvider).ConfigureAwait(false),
+                        ComposeExtension = await SearchFeedbackHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.feedbackSearchService, this.activityStorageProvider).ConfigureAwait(false),
                     };
                 }
 

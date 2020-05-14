@@ -25,12 +25,13 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// </summary>
         private const string OpenCommandId = "openrequests";
 
-        
+
 
         /// <summary>
         /// Get the results from Azure search service and populate the result (card + preview).
         /// </summary>
         /// <param name="query">Query which the user had typed in message extension search.</param>
+        /// <param name="commandId">Command ID in the manifest.</param>
         /// <param name="count">Count for pagination.</param>
         /// <param name="skip">Skip for pagination.</param>
         /// <param name="localTimestamp">Local timestamp of the user activity.</param>
@@ -39,6 +40,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <returns><see cref="Task"/> Returns MessagingExtensionResult which will be used for providing the card.</returns>
         public static async Task<MessagingExtensionResult> GetSearchResultAsync(
             string query,
+            string commandId,
             int? count,
             int? skip,
             DateTimeOffset? localTimestamp,
