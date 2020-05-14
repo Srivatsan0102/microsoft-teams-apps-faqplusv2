@@ -83,7 +83,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
             CloudTableClient cloudTableClient = storageAccount.CreateCloudTableClient();
-            this.ticketCloudTable = cloudTableClient.GetTableReference(Constants.TicketTableName);
+            this.ticketCloudTable = cloudTableClient.GetTableReference(Constants.FeedbackTicketTableName);
 
             await this.ticketCloudTable.CreateIfNotExistsAsync().ConfigureAwait(false);
         }
