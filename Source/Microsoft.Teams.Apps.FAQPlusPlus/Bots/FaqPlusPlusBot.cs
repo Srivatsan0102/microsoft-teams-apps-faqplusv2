@@ -399,6 +399,18 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     };
                 }
 
+                if (teamsChannelData.Team.Name.Equals("Adoption Bot Feedback"))
+                {
+                    return new MessagingExtensionResponse
+                    {
+                        ComposeExtension = new MessagingExtensionResult
+                        {
+                            Text = "Welcome to the Share feedback messaging extension!",
+                            Type = "message",
+                        },
+                    };
+                }
+
                 return new MessagingExtensionResponse
                 {
                     ComposeExtension = new MessagingExtensionResult
