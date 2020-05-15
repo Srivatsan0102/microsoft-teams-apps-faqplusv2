@@ -23,7 +23,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <summary>
         /// Open requests command id in the manifest file.
         /// </summary>
-        private const string OpenCommandId = "openrequests";
+        private const string HistoryId = "history";
 
 
 
@@ -85,7 +85,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
                 ThumbnailCard previewCard = new ThumbnailCard
                 {
                     Title = ticket.Title,
-                    Text = GetPreviewCardText(ticket,commandId, localTimestamp),
+                    Text = GetPreviewCardText(ticket, commandId, localTimestamp),
                 };
 
                 var selectedTicketAdaptiveCard = new MessagingExtensionFeedbackCard(ticket);
@@ -104,7 +104,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <returns>Command id as string.</returns>
         private static string GetPreviewCardText(FeedbackTicketEntity ticket, string commandId, DateTimeOffset? localTimestamp)
         {
-            var ticketStatus = commandId != OpenCommandId ? $"<div style='white-space:nowrap'>{HttpUtility.HtmlEncode(Cards.CardHelper.GetTicketDisplayStatusForFeedback(ticket))}</div>" : string.Empty;
+            var ticketStatus = commandId != HistoryId ? $"<div style='white-space:nowrap'>{HttpUtility.HtmlEncode(Cards.CardHelper.GetTicketDisplayStatusForFeedback(ticket))}</div>" : string.Empty;
             var cardText = $@"<div>
                                 <div style='white-space:nowrap'>
                                         {HttpUtility.HtmlEncode(Cards.CardHelper.GetFormattedDateInUserTimeZone(ticket.DateCreated, localTimestamp))} 
