@@ -404,7 +404,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                         ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
                     };
                 }
-                else if (turnContext != null && teamsChannelData?.Team?.Id == feedbackTeamId)
+                else if (teamsChannelData.Team.Id.Equals(feedbackTeamId))
                 {
                     var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
                     var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
