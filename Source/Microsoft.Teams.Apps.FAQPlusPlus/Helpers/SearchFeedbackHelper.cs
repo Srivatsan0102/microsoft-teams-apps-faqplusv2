@@ -55,7 +55,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
             };
 
             IList<FeedbackTicketEntity> searchServiceResults = new List<FeedbackTicketEntity>();
-            searchServiceResults = await searchService.SearchTicketsAsync(query, count, skip).ConfigureAwait(false);
+            searchServiceResults = await searchService.SearchTicketsAsync(FeedbackSearchScope.History, query, count, skip).ConfigureAwait(false);
             composeExtensionResult = GetMessagingExtensionResult(localTimestamp, commandId, searchServiceResults);
 
             return composeExtensionResult;

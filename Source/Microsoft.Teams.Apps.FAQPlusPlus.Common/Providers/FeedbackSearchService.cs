@@ -70,19 +70,25 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
         /// <summary>
         /// Provide search result for table to be used by the feedback expert based on Azure search service.
         /// </summary>
+        /// <param name="searchScope">Feedback Scope param.</param>
         /// <param name="searchQuery">searchQuery to be provided by message extension.</param>
         /// <param name="count">Number of search results to return.</param>
         /// <param name="skip">Number of search results to skip.</param>
         /// <returns>List of search results.</returns>
-        public async Task<IList<FeedbackTicketEntity>> SearchTicketsAsync(string searchQuery, int? count = null, int? skip = null)
+        public async Task<IList<FeedbackTicketEntity>> SearchTicketsAsync(FeedbackSearchScope searchScope, string searchQuery, int? count = null, int? skip = null)
         {
             await this.EnsureInitializedAsync().ConfigureAwait(false);
 
             IList<FeedbackTicketEntity> tickets = new List<FeedbackTicketEntity>();
 
             SearchParameters searchParameters = new SearchParameters();
-            searchParameters.OrderBy = new[] { "Timestamp desc " };
 
+            switch (searchScope)
+            {
+                case FeedbackSearchScope.History:
+                    searchParameters.OrderBy = new[] { "Timestamp desc " };
+                    break;
+            }
             searchParameters.Top = count ?? DefaultSearchResultCount;
             searchParameters.Skip = skip ?? 0;
             searchParameters.IncludeTotalResultCount = false;

@@ -16,10 +16,11 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
         /// <summary>
         /// Provide search result for table to be used by feedback experts based on Azure search service.
         /// </summary>
+        /// <param name="searchScope">Feedback Scope param.</param>
         /// <param name="searchQuery">searchQuery to be provided by message extension.</param>
         /// <param name="count">Number of search results to return.</param>
         /// <param name="skip">Number of search results to skip.</param>
         /// <returns>List of search results.</returns>
-        Task<IList<FeedbackTicketEntity>> SearchTicketsAsync(string searchQuery, int? count = null, int? skip = null);
+        Task<IList<FeedbackTicketEntity>> SearchTicketsAsync(FeedbackSearchScope searchScope, string searchQuery, int? count = null, int? skip = null);
     }
 }
