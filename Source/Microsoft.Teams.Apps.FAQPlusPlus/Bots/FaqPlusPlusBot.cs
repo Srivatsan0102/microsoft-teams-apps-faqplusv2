@@ -412,13 +412,13 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     return new MessagingExtensionResponse
                     {
                         //ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
-                        //ComposeExtension = await SearchFeedbackHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.feedbackSearchService, this.activityStorageProvider).ConfigureAwait(false),
-
-                            ComposeExtension = new MessagingExtensionResult
-                            {
-                                Text = "This is the feedback team!",
-                                Type = "message",
-                            },
+                        ComposeExtension = await SearchFeedbackHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.feedbackSearchService, this.activityStorageProvider).ConfigureAwait(false),
+                        /*
+                                ComposeExtension = new MessagingExtensionResult
+                                {
+                                    Text = "This is the feedback team!",
+                                    Type = "message",
+                                },*/
                     };
                 }
 
