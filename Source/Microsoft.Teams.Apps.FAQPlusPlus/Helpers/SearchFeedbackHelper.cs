@@ -56,7 +56,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
 
             IList<FeedbackTicketEntity> searchServiceResults = new List<FeedbackTicketEntity>();
             searchServiceResults = await searchService.SearchTicketsAsync(query, count, skip).ConfigureAwait(false);
-            composeExtensionResult = GetMessagingExtensionResult(localTimestamp, searchServiceResults);
+            composeExtensionResult = GetMessagingExtensionResult(localTimestamp, commandId, searchServiceResults);
 
             return composeExtensionResult;
         }
@@ -65,10 +65,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// Get populated result to in messaging extension tab.
         /// </summary>
         /// <param name="localTimestamp">Local timestamp of the user activity.</param>
+        /// <param name="commandId">Command ID in the manifest</param>
         /// <param name="searchServiceResults">List of feedback tickets from Azure search service.</param>
         /// <returns><see cref="Task"/> Returns MessagingExtensionResult which will be shown in messaging extension tab.</returns>
         public static MessagingExtensionResult GetMessagingExtensionResult(
             DateTimeOffset? localTimestamp,
+            string commandId,
             IList<FeedbackTicketEntity> searchServiceResults)
         {
             MessagingExtensionResult composeExtensionResult = new MessagingExtensionResult
@@ -83,7 +85,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
                 ThumbnailCard previewCard = new ThumbnailCard
                 {
                     Title = ticket.Title,
-                    Text = GetPreviewCardText(ticket, localTimestamp),
+                    Text = GetPreviewCardText(ticket,commandId, localTimestamp),
                 };
 
                 var selectedTicketAdaptiveCard = new MessagingExtensionFeedbackCard(ticket);
@@ -97,15 +99,17 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// Get the text for the preview card for the result.
         /// </summary>
         /// <param name="ticket">Feedback Ticket object for ask an expert action.</param>
+        /// <param name="commandId">Command id which indicate the action.</param>
         /// <param name="localTimestamp">Local time stamp.</param>
         /// <returns>Command id as string.</returns>
-        private static string GetPreviewCardText(FeedbackTicketEntity ticket, DateTimeOffset? localTimestamp)
+        private static string GetPreviewCardText(FeedbackTicketEntity ticket, string commandId, DateTimeOffset? localTimestamp)
         {
+            var ticketStatus = commandId != OpenCommandId ? $"<div style='white-space:nowrap'>{HttpUtility.HtmlEncode(Cards.CardHelper.GetTicketDisplayStatusForFeedback(ticket))}</div>" : string.Empty;
             var cardText = $@"<div>
                                 <div style='white-space:nowrap'>
                                         {HttpUtility.HtmlEncode(Cards.CardHelper.GetFormattedDateInUserTimeZone(ticket.DateCreated, localTimestamp))} 
                                         | {HttpUtility.HtmlEncode(ticket.RequesterName)}
-                                </div> 
+                                </div> {ticketStatus}
                          </div>";
             return cardText.Trim();
         }

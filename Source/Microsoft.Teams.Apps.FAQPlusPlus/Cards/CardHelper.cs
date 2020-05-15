@@ -87,6 +87,25 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         }
 
         /// <summary>
+        /// Gets the current status of the ticket to display in the feedback team.
+        /// </summary>
+        /// <param name="ticket">The current ticket information.</param>
+        /// <returns>A status string.</returns>
+        public static string GetTicketDisplayStatusForFeedback(FeedbackTicketEntity ticket)
+        {
+            if (ticket?.Status == (int)TicketState.Open)
+            {
+                return ticket.IsAssigned() ?
+                    string.Format(CultureInfo.InvariantCulture, Strings.SMETicketAssignedStatus, ticket?.AssignedToName) :
+                    Strings.SMETicketUnassignedStatus;
+            }
+            else
+            {
+                return Strings.SMETicketClosedStatus;
+            }
+        }
+
+        /// <summary>
         /// Returns a string that will display the given date and time in the user's local time zone, when placed in an adaptive card.
         /// </summary>
         /// <param name="dateTime">The date and time to format.</param>
