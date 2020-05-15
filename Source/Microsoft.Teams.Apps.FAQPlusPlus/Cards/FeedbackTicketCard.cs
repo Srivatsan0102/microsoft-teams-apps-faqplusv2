@@ -57,10 +57,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                         Text = string.Format(CultureInfo.InvariantCulture, Strings.QuestionForExpertSubHeaderText, this.Ticket.RequesterName),
                         Wrap = true,
                     },
-                    new AdaptiveFactSet
-                    {
-                        Facts = this.BuildFactSet(localTimestamp),
-                    },
                 },
                 Actions = this.BuildActions(),
             };
@@ -120,36 +116,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
             };
         }
 
-        /// <summary>
-        /// Return the appropriate fact set based on the state and information in the ticket.
-        /// </summary>
-        /// <param name="localTimestamp">The current timestamp.</param>
-        /// <returns>The fact set showing the necessary details.</returns>
-        private List<AdaptiveFact> BuildFactSet(DateTimeOffset? localTimestamp)
-        {
-            List<AdaptiveFact> factList = new List<AdaptiveFact>();
-
-            if (!string.IsNullOrEmpty(this.Ticket.Description))
-            {
-                factList.Add(new AdaptiveFact
-                {
-                    Title = Strings.DescriptionFact,
-                    Value = this.Ticket.Description,
-                });
-            }
-
-            if (!string.IsNullOrEmpty(this.Ticket.UserQuestion))
-            {
-                factList.Add(new AdaptiveFact
-                {
-                    Title = Strings.QuestionAskedFactTitle,
-                    Value = this.Ticket.UserQuestion,
-                });
-            }
-
-            return factList;
-        }
-
-
+       
     }
 }

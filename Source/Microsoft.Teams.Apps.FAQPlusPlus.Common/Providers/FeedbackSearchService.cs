@@ -33,7 +33,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
         private readonly SearchIndexClient searchIndexClient;
         private readonly IFeedbackTicketsProvider ticketProvider;
         private readonly int searchIndexingIntervalInMinutes;
-        private readonly ILogger<SearchService> logger;
+        private readonly ILogger<FeedbackSearchService> logger;
 
         /// <summary>
         /// Represents a set of key/value application configuration properties.
@@ -49,7 +49,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
         public FeedbackSearchService(
             IOptionsMonitor<KnowledgeBaseSettings> optionsAccessor,
             IFeedbackTicketsProvider ticketProvider,
-            ILogger<SearchService> logger)
+            ILogger<FeedbackSearchService> logger)
         {
             this.options = optionsAccessor.CurrentValue;
             string searchServiceValue = this.options.SearchServiceName;

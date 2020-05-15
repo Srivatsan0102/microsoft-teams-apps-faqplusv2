@@ -56,7 +56,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
 
             IList<FeedbackTicketEntity> searchServiceResults = new List<FeedbackTicketEntity>();
             searchServiceResults = await searchService.SearchTicketsAsync(FeedbackSearchScope.History, query, count, skip).ConfigureAwait(false);
-            composeExtensionResult = GetMessagingExtensionResult(localTimestamp, commandId, searchServiceResults);
+            composeExtensionResult = GetMessagingExtensionResult(commandId, localTimestamp, searchServiceResults);
 
             return composeExtensionResult;
         }
@@ -64,13 +64,13 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <summary>
         /// Get populated result to in messaging extension tab.
         /// </summary>
+        /// <param name="commandId">Command ID in the manifest.</param>
         /// <param name="localTimestamp">Local timestamp of the user activity.</param>
-        /// <param name="commandId">Command ID in the manifest</param>
         /// <param name="searchServiceResults">List of feedback tickets from Azure search service.</param>
         /// <returns><see cref="Task"/> Returns MessagingExtensionResult which will be shown in messaging extension tab.</returns>
         public static MessagingExtensionResult GetMessagingExtensionResult(
+           string commandId,
             DateTimeOffset? localTimestamp,
-            string commandId,
             IList<FeedbackTicketEntity> searchServiceResults)
         {
             MessagingExtensionResult composeExtensionResult = new MessagingExtensionResult
