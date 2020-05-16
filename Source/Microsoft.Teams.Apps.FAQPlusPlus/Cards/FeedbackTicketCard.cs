@@ -47,7 +47,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 {
                     new AdaptiveTextBlock
                     {
-                        Text = this.Ticket.Title,
+                        Text = this.Ticket.Description,
                         Size = AdaptiveTextSize.Large,
                         Weight = AdaptiveTextWeight.Bolder,
                         Wrap = true,

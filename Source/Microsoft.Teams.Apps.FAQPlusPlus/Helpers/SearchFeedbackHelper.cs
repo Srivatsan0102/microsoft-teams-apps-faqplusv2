@@ -84,7 +84,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
             {
                 ThumbnailCard previewCard = new ThumbnailCard
                 {
-                    Title = ticket.Title,
+                    Title = ticket.Description,
                     Text = "This is the thumbnail text:)", //GetPreviewCardText(ticket, commandId, localTimestamp),
                 };
 
