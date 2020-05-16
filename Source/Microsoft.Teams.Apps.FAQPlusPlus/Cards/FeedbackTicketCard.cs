@@ -109,7 +109,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         /// <returns>Adaptive card action for starting chat with user.</returns>
         protected AdaptiveAction CreateChatWithUserAction()
         {
-            var messageToSend = string.Format(CultureInfo.InvariantCulture, Strings.SMEUserChatMessage, this.Ticket.Title);
+            var messageToSend = string.Format(CultureInfo.InvariantCulture, Strings.SMEUserChatMessage, this.Ticket.Description);
             var encodedMessage = Uri.EscapeDataString(messageToSend);
 
             return new AdaptiveOpenUrlAction
