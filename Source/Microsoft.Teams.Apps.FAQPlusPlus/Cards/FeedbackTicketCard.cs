@@ -52,11 +52,13 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                         Weight = AdaptiveTextWeight.Bolder,
                         Wrap = true,
                     },
+                    /*
                     new AdaptiveTextBlock
                     {
                         Text = string.Format(CultureInfo.InvariantCulture, Strings.QuestionForExpertSubHeaderText, this.Ticket.RequesterName),
                         Wrap = true,
                     },
+                    */
                 },
                 Actions = this.BuildActions(),
             };
@@ -78,6 +80,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
 
             actionsList.Add(this.CreateChatWithUserAction());
 
+            /*
             if (!string.IsNullOrEmpty(this.Ticket.KnowledgeBaseAnswer))
             {
                 actionsList.Add(new AdaptiveShowCardAction
@@ -95,7 +98,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                         },
                     },
                 });
-            }
+            }*/
 
             return actionsList;
         }

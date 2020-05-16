@@ -85,7 +85,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
                 ThumbnailCard previewCard = new ThumbnailCard
                 {
                     Title = ticket.Title,
-                    Text = GetPreviewCardText(ticket, commandId, localTimestamp),
+                    Text = "This is the thumbnail text:)", //GetPreviewCardText(ticket, commandId, localTimestamp),
                 };
 
                 var selectedTicketAdaptiveCard = new MessagingExtensionFeedbackCard(ticket);

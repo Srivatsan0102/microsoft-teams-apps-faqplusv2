@@ -33,7 +33,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
             List<AdaptiveAction> actions = new List<AdaptiveAction>();
 
             actions.Add(this.CreateChatWithUserAction());
-
+            /*
             if (!string.IsNullOrEmpty(this.Ticket.FeedbackThreadConversationId))
             {
                 actions.Add(
@@ -43,6 +43,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                         Url = new Uri(CreateDeeplinkToThread(this.Ticket.FeedbackThreadConversationId)),
                     });
             }
+            */
 
             return actions;
         }
