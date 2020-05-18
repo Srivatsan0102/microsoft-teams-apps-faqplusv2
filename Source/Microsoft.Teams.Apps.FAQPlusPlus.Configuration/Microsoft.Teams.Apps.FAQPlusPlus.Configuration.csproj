@@ -331,6 +331,7 @@
     <Content Include="Views\Home\_HelpTab.cshtml" />
     <Content Include="Views\Shared\_Spinner.cshtml" />
     <Content Include="Views\Home\_FeedbackTeam.cshtml" />
+    <Content Include="Views\Home\_KnowledgeBase2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx">

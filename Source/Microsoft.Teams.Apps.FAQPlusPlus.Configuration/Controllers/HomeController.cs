@@ -8,6 +8,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Web;
+    using System.Web.DynamicData;
     using System.Web.Mvc;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common.Models;
@@ -162,6 +163,25 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         }
 
         /// <summary>
+        /// Save or update the second knowledge base ID in the table storage which is received from View
+        /// </summary>
+        /// <param name="knowledgeBaseId">The knowledge base Id for the second KB.</param>
+        /// <returns>View</returns>
+        [HttpGet]
+        public async Task<ActionResult> UpsertKnowledgeBaseIdAsync2(string knowledgeBaseId)
+        {
+            bool isSaved = await this.configurationPovider.UpsertEntityAsync(knowledgeBaseId, ConfigurationEntityTypes.KnowledgeBaseId2).ConfigureAwait(false);
+            if (isSaved)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Sorry, unable to save the knowledge base id due to an internal error. Try again.");
+            }
+        }
+
+        /// <summary>
         /// Validate knowledgebase id from QnA Maker service first and then proceed to save it on success.
         /// The QnA Maker endpoint key is also refreshed as part of this process.
         /// </summary>
@@ -189,6 +209,32 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         }
 
         /// <summary>
+        /// Validate the second knowledgebase id from QnA Maker service first and then proceed to save it on success.
+        /// The QnA Maker endpoint key is also refreshed as part of this process.
+        /// </summary>
+        /// <param name="knowledgeBaseId">knowledgeBaseId is the unique string to identify knowledgebase.</param>
+        /// <returns>View.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ValidateAndSaveKnowledgeBaseIdAsync2(string knowledgeBaseId)
+        {
+            bool isValidKnowledgeBaseId = await this.IsKnowledgeBaseIdValid(knowledgeBaseId).ConfigureAwait(false);
+            if (isValidKnowledgeBaseId)
+            {
+                var endpointRefreshStatus = await this.RefreshQnAMakerEndpointKeyAsync().ConfigureAwait(false);
+                if (!endpointRefreshStatus){
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Sorry, unable to save the QnaMaker endpoint key due to an internal error. Try again.");
+                }
+
+                return await this.UpsertKnowledgeBaseIdAsync2(knowledgeBaseId).ConfigureAwait(false);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "The provided knowledgebase ID is not valid");
+            }
+        }
+
+        /// <summary>
         /// Get already saved knowledgebase id from table storage.
         /// </summary>
         /// <returns>knowledgebase id.</returns>
@@ -196,6 +242,16 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         public async Task<string> GetSavedKnowledgeBaseIdAsync()
         {
             return await this.configurationPovider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get the saved second knowledge base ID from the azure table storage.
+        /// </summary>
+        /// <returns>second knowledgebase ID.</returns>
+        [HttpGet]
+        public async Task<string> GetSavedKnowledgeBaseIdAsync2()
+        {
+            return await this.configurationPovider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId2).ConfigureAwait(false);
         }
 
         /// <summary>

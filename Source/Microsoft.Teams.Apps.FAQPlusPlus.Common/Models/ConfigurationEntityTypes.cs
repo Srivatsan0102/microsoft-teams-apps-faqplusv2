@@ -24,6 +24,16 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Models
         public const string KnowledgeBaseId = "KnowledgeBaseId";
 
         /// <summary>
+        /// Second knowledge base entity.
+        /// </summary>
+        public const string KnowledgeBaseId2 = "KnowledgeBaseId2";
+
+        ///<summary>
+        /// Main knowledge base.
+        /// </summary>
+        public const string MainKnowledgeBase = "MainKnowledgeBase";
+
+        /// <summary>
         /// Welcome message entity.
         /// </summary>
         public const string WelcomeMessageText = "WelcomeMessageText";

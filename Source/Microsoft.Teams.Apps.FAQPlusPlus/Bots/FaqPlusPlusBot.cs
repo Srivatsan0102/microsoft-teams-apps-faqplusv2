@@ -12,6 +12,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.ApplicationInsights.DataContracts;
+    using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
     using Microsoft.Bot.Builder;
     using Microsoft.Bot.Builder.Teams;
@@ -91,6 +92,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         private readonly IKnowledgeBaseSearchService knowledgeBaseSearchService;
         private readonly ILogger<FaqPlusPlusBot> logger;
         private readonly IQnaServiceProvider qnaServiceProvider;
+        private readonly IQnAMakerClient qnaMakerClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FaqPlusPlusBot"/> class.
@@ -106,6 +108,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="knowledgeBaseSearchService">KnowledgeBaseSearchService dependency injection.</param>
         /// <param name="optionsAccessor">A set of key/value application configuration properties for FaqPlusPlus bot.</param>
         /// <param name="logger">Instance to send logs to the Application Insights service.</param>
+        /// <param name="qnaMakerClient">qnaMakerClient dependency injection.</param>
         public FaqPlusPlusBot(
             Common.Providers.IConfigurationDataProvider configurationProvider,
             MicrosoftAppCredentials microsoftAppCredentials,
@@ -117,7 +120,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             IMemoryCache memoryCache,
             IKnowledgeBaseSearchService knowledgeBaseSearchService,
             IOptionsMonitor<BotSettings> optionsAccessor,
-            ILogger<FaqPlusPlusBot> logger)
+            ILogger<FaqPlusPlusBot> logger,
+            IQnAMakerClient qnaMakerClient)
         {
             this.configurationProvider = configurationProvider;
             this.microsoftAppCredentials = microsoftAppCredentials;
@@ -131,6 +135,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             this.accessCache = memoryCache;
             this.logger = logger;
             this.accessCacheExpiryInDays = this.options.AccessCacheExpiryInDays;
+            this.qnaMakerClient = qnaMakerClient;
 
             if (this.accessCacheExpiryInDays <= 0)
             {
@@ -347,7 +352,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 // Check if knowledge base is empty and has not published yet when sme user is trying to edit the qna pair.
                 if (((ErrorResponseException)ex?.InnerException)?.Response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
+                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
                     var hasPublished = await this.qnaServiceProvider.GetInitialPublishedStatusAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     // Check if knowledge base has not published yet.
@@ -604,7 +609,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 // Check if exception is not related to empty kb then add the qna pair otherwise throw it.
                 if (((ErrorResponseException)ex).Response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
+                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
                     var hasPublished = await this.qnaServiceProvider.GetInitialPublishedStatusAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     // Check if knowledge base has not published yet.
@@ -714,6 +719,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             IList<ChannelAccount> membersAdded,
             ITurnContext<IConversationUpdateActivity> turnContext)
         {
+            var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
+            await this.configurationProvider.UpsertEntityAsync(knowledgeBaseId, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
             var activity = turnContext.Activity;
             if (membersAdded.Any(channelAccount => channelAccount.Id == activity.Recipient.Id))
             {
@@ -808,6 +815,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
                     break;
 
+                case "Choose Bot":
+                    this.logger.LogInformation("Selecting knowledge base");
+                    Attachment newCard = new MultipleKBCard(this.configurationProvider, this.qnaMakerClient).GetCard("Select your KB bot from the following choices!");
+                    await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
+                    break;
+
                 default:
                     this.logger.LogInformation("Sending input to QnAMaker");
                     await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
@@ -879,7 +892,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 // Check if expert user is trying to delete the question and knowledge base has not published yet.
                 if (((ErrorResponseException)ex).Response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
+                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
                     var hasPublished = await this.qnaServiceProvider.GetInitialPublishedStatusAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     // Check if knowledge base has not published yet.
@@ -949,6 +962,22 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                         await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
                     }
 
+                    break;
+
+                case "KB 1":
+                    this.logger.LogInformation("You have selected KB 1");
+                    var knowledgebaseId1 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
+
+                    await this.configurationProvider.UpsertEntityAsync(knowledgebaseId1, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                    await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB1!")).ConfigureAwait(false); // To be modified to a card.
+                    break;
+
+                case "KB 2":
+                    this.logger.LogInformation("You have selected KB 2");
+                    var knowledgebaseId2 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId2).ConfigureAwait(false);
+
+                    await this.configurationProvider.UpsertEntityAsync(knowledgebaseId2, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                    await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB2!")).ConfigureAwait(false); // To be modified to a card.
                     break;
 
                 default:
@@ -1476,7 +1505,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 // Check if knowledge base is empty and has not published yet when end user is asking a question to bot.
                 if (((ErrorResponseException)ex).Response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
+                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
                     var hasPublished = await this.qnaServiceProvider.GetInitialPublishedStatusAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     // Check if knowledge base has not published yet.
