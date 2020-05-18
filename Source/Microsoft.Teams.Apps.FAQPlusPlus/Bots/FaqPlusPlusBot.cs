@@ -727,8 +727,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 var welcomeText = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.WelcomeMessageText).ConfigureAwait(false);
                 var userWelcomeCardAttachment = WelcomeCard.GetCard(welcomeText);
                 await turnContext.SendActivityAsync(MessageFactory.Attachment(userWelcomeCardAttachment)).ConfigureAwait(false);
-                var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
-                await this.configurationProvider.UpsertEntityAsync(knowledgeBaseId, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                // var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
+                // await this.configurationProvider.UpsertEntityAsync(knowledgeBaseId, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
             }
         }
 
