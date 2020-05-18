@@ -92,7 +92,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
             searchParameters.Top = count ?? DefaultSearchResultCount;
             searchParameters.Skip = skip ?? 0;
             searchParameters.IncludeTotalResultCount = false;
-            searchParameters.Select = new[] { "Timestamp", "Status", "DateCreated", "RequesterName", "RequesterUserPrincipalName", "Description", "RequesterGivenName", "FeedbackThreadConversationId", "LastModifiedByName",};
+            searchParameters.Select = new[] { "Timestamp", "Status", "DateCreated", "RequesterName", "RequesterUserPrincipalName", "Description", "RequesterGivenName", "FeedbackThreadConversationId", "LastModifiedByName"};
 
             var docs = await this.searchIndexClient.Documents.SearchAsync<FeedbackTicketEntity>(searchQuery, searchParameters).ConfigureAwait(false);
             if (docs != null)

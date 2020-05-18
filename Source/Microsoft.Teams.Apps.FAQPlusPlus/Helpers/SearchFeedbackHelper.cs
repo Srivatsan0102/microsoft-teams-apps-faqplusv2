@@ -55,8 +55,14 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
             };
 
             IList<FeedbackTicketEntity> searchServiceResults = new List<FeedbackTicketEntity>();
+            switch (commandId)
+            {
+                case "history":
             searchServiceResults = await searchService.SearchTicketsAsync(FeedbackSearchScope.History, query, count, skip).ConfigureAwait(false);
             composeExtensionResult = GetMessagingExtensionResult(commandId, localTimestamp, searchServiceResults);
+            break;
+        }
+
 
             return composeExtensionResult;
         }
@@ -70,8 +76,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <returns><see cref="Task"/> Returns MessagingExtensionResult which will be shown in messaging extension tab.</returns>
         public static MessagingExtensionResult GetMessagingExtensionResult(
            string commandId,
-            DateTimeOffset? localTimestamp,
-            IList<FeedbackTicketEntity> searchServiceResults)
+           DateTimeOffset? localTimestamp,
+           IList<FeedbackTicketEntity> searchServiceResults)
         {
             MessagingExtensionResult composeExtensionResult = new MessagingExtensionResult
             {
