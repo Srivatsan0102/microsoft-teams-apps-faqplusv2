@@ -979,13 +979,13 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     }
 
                     break;
-                case "kb 1":
+                case Constants.KB1:
                     this.logger.LogInformation("You have selected KB 1");
                     var knowledgebaseId1 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
                     await this.configurationProvider.UpsertEntityAsync(knowledgebaseId1, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
                     await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB1!")).ConfigureAwait(false); // To be modified to a card.
                     break;
-                case "kb 2":
+                case Constants.KB2:
                     this.logger.LogInformation("You have selected KB 2");
                     var knowledgebaseId2 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId2).ConfigureAwait(false);
                     await this.configurationProvider.UpsertEntityAsync(knowledgebaseId2, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);

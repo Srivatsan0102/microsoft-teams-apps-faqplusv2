@@ -7,10 +7,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AdaptiveCards;
+    using Microsoft.AspNetCore.WebSockets.Internal;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker;
     using Microsoft.Bot.Schema;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common.Models;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers;
+    using Microsoft.Teams.Apps.FAQPlusPlus.Common;
 
     /// <summary>
     /// Card which gives the user an option to select the KB.
@@ -87,27 +89,27 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 {
                     new AdaptiveSubmitAction
                     {
-                        Title = "kb 1",
+                        Title = Common.Constants.KB1,
                         Data = new TeamsAdaptiveSubmitActionData
                         {
                             MsTeams = new CardAction
                             {
                               Type = ActionTypes.MessageBack,
-                              DisplayText = "kb 1",
-                              Text = "kb 1",
+                              DisplayText = Common.Constants.KB1,
+                              Text = Common.Constants.KB1,
                             },
                         },
                     },
                     new AdaptiveSubmitAction
                     {
-                        Title = "kb 2",
+                        Title = Common.Constants.KB2,
                         Data = new TeamsAdaptiveSubmitActionData
                         {
                             MsTeams = new CardAction
                             {
                               Type = ActionTypes.MessageBack,
-                              DisplayText = "kb 2",
-                              Text = "kb 2",
+                              DisplayText = Common.Constants.KB2,
+                              Text = Common.Constants.KB2,
                             },
                         },
                     },
