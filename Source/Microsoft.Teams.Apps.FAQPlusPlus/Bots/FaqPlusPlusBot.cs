@@ -12,6 +12,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.ApplicationInsights.DataContracts;
+    using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
     using Microsoft.Bot.Builder;
     using Microsoft.Bot.Builder.Teams;
@@ -91,6 +92,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         private readonly IKnowledgeBaseSearchService knowledgeBaseSearchService;
         private readonly ILogger<FaqPlusPlusBot> logger;
         private readonly IQnaServiceProvider qnaServiceProvider;
+        private readonly IQnAMakerClient qnaMakerClient;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FaqPlusPlusBot"/> class.
@@ -106,6 +109,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="knowledgeBaseSearchService">KnowledgeBaseSearchService dependency injection.</param>
         /// <param name="optionsAccessor">A set of key/value application configuration properties for FaqPlusPlus bot.</param>
         /// <param name="logger">Instance to send logs to the Application Insights service.</param>
+        /// <param name="qnaMakerClient">qnaMakerClient dependency injection.</param>
         public FaqPlusPlusBot(
             Common.Providers.IConfigurationDataProvider configurationProvider,
             MicrosoftAppCredentials microsoftAppCredentials,
@@ -117,7 +121,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             IMemoryCache memoryCache,
             IKnowledgeBaseSearchService knowledgeBaseSearchService,
             IOptionsMonitor<BotSettings> optionsAccessor,
-            ILogger<FaqPlusPlusBot> logger)
+            ILogger<FaqPlusPlusBot> logger,
+            IQnAMakerClient qnaMakerClient)
         {
             this.configurationProvider = configurationProvider;
             this.microsoftAppCredentials = microsoftAppCredentials;
@@ -131,6 +136,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             this.accessCache = memoryCache;
             this.logger = logger;
             this.accessCacheExpiryInDays = this.options.AccessCacheExpiryInDays;
+            this.qnaMakerClient = qnaMakerClient;
 
             if (this.accessCacheExpiryInDays <= 0)
             {
