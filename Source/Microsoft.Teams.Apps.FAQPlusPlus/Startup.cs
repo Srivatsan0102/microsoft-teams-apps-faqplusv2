@@ -110,7 +110,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus
             services.AddSingleton<IKnowledgeBaseSearchService>((provider) => new KnowledgeBaseSearchService(this.Configuration["SearchServiceName"], this.Configuration["SearchServiceQueryApiKey"], this.Configuration["SearchServiceAdminApiKey"], this.Configuration["StorageConnectionString"]));
 
             services.AddSingleton<ISearchService, SearchService>();
-            services.AddSingleton<IQnAMakerClient, QnAMakerClient>();
             services.AddSingleton<IMemoryCache, MemoryCache>();
             services.AddTransient(sp => (BotFrameworkAdapter)sp.GetRequiredService<IBotFrameworkHttpAdapter>());
             services.AddTransient<IBot, FaqPlusPlusBot>();
