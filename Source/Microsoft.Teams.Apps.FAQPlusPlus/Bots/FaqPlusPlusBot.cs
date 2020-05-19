@@ -352,7 +352,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 // Check if knowledge base is empty and has not published yet when sme user is trying to edit the qna pair.
                 if (((ErrorResponseException)ex?.InnerException)?.Response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
                     var hasPublished = await this.qnaServiceProvider.GetInitialPublishedStatusAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     // Check if knowledge base has not published yet.
@@ -438,7 +438,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             try
             {
                 turnContext.Activity.TryGetChannelData<TeamsChannelData>(out var teamsChannelData);
-                string expertTeamId = this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).GetAwaiter().GetResult();
+                string expertTeamId = this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).GetAwaiter().GetResult();
 
                 if (teamsChannelData?.Team?.Id != expertTeamId)
                 {
@@ -609,7 +609,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 // Check if exception is not related to empty kb then add the qna pair otherwise throw it.
                 if (((ErrorResponseException)ex).Response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
                     var hasPublished = await this.qnaServiceProvider.GetInitialPublishedStatusAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     // Check if knowledge base has not published yet.
@@ -892,7 +892,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 // Check if expert user is trying to delete the question and knowledge base has not published yet.
                 if (((ErrorResponseException)ex).Response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
                     var hasPublished = await this.qnaServiceProvider.GetInitialPublishedStatusAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     // Check if knowledge base has not published yet.
@@ -1505,7 +1505,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 // Check if knowledge base is empty and has not published yet when end user is asking a question to bot.
                 if (((ErrorResponseException)ex).Response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                    var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
                     var hasPublished = await this.qnaServiceProvider.GetInitialPublishedStatusAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     // Check if knowledge base has not published yet.
