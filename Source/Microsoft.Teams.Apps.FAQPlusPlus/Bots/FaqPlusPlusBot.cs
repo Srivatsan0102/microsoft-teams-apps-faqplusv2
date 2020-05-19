@@ -832,7 +832,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
                     break;
 
-                case "Choose Bot":
+                case Constants.ChooseBot:
                     this.logger.LogInformation("Selecting knowledge base");
                     Attachment newCard = new MultipleKBCard(this.configurationProvider, this.qnaMakerClient).GetCard("Select your KB bot from the following choices!");
                     await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
