@@ -109,7 +109,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="knowledgeBaseSearchService">KnowledgeBaseSearchService dependency injection.</param>
         /// <param name="optionsAccessor">A set of key/value application configuration properties for FaqPlusPlus bot.</param>
         /// <param name="logger">Instance to send logs to the Application Insights service.</param>
-        /// <param name="qnaMakerClient">qnaMakerClient dependency injection.</param>
         public FaqPlusPlusBot(
             Common.Providers.IConfigurationDataProvider configurationProvider,
             MicrosoftAppCredentials microsoftAppCredentials,
@@ -121,8 +120,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             IMemoryCache memoryCache,
             IKnowledgeBaseSearchService knowledgeBaseSearchService,
             IOptionsMonitor<BotSettings> optionsAccessor,
-            ILogger<FaqPlusPlusBot> logger,
-            IQnAMakerClient qnaMakerClient)
+            ILogger<FaqPlusPlusBot> logger
+            )
         {
             this.configurationProvider = configurationProvider;
             this.microsoftAppCredentials = microsoftAppCredentials;
@@ -136,7 +135,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             this.accessCache = memoryCache;
             this.logger = logger;
             this.accessCacheExpiryInDays = this.options.AccessCacheExpiryInDays;
-            this.qnaMakerClient = qnaMakerClient;
 
             if (this.accessCacheExpiryInDays <= 0)
             {
@@ -167,6 +165,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 {
                     this.logger.LogInformation($"Unexpected tenant id {turnContext?.Activity.Conversation.TenantId}", SeverityLevel.Warning);
                     return Task.CompletedTask;
+
                 }
 
                 // Get the current culture info to use in resource files
