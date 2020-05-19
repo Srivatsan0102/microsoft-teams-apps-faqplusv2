@@ -837,6 +837,18 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
                     break;
 
+                case Constants.KB1:
+                    this.logger.LogInformation("You have selected KB 1");
+                    var knowledgebaseId1 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
+                    await this.configurationProvider.UpsertEntityAsync(knowledgebaseId1, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                    await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB1!")).ConfigureAwait(false); // To be modified to a card.
+                    break;
+                case Constants.KB2:
+                    this.logger.LogInformation("You have selected KB 2");
+                    var knowledgebaseId2 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId2).ConfigureAwait(false);
+                    await this.configurationProvider.UpsertEntityAsync(knowledgebaseId2, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+                    await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB2!")).ConfigureAwait(false); // To be modified to a card.
+                    break;
                 default:
                     this.logger.LogInformation("Sending input to QnAMaker");
                     await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
@@ -979,18 +991,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     }
 
                     break;
-                case Constants.KB1:
-                    this.logger.LogInformation("You have selected KB 1");
-                    var knowledgebaseId1 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
-                    await this.configurationProvider.UpsertEntityAsync(knowledgebaseId1, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
-                    await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB1!")).ConfigureAwait(false); // To be modified to a card.
-                    break;
-                case Constants.KB2:
-                    this.logger.LogInformation("You have selected KB 2");
-                    var knowledgebaseId2 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId2).ConfigureAwait(false);
-                    await this.configurationProvider.UpsertEntityAsync(knowledgebaseId2, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
-                    await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB2!")).ConfigureAwait(false); // To be modified to a card.
-                    break;
+               
 
                 default:
                     this.logger.LogInformation($"Unexpected text in submit payload: {message.Text}", SeverityLevel.Warning);
