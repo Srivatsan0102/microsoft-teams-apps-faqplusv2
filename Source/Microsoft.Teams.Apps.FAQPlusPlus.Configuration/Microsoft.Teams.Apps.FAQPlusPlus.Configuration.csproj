@@ -274,6 +274,7 @@
     <Compile Include="Models\FeedbackTeamViewModel.cs" />
     <Compile Include="Models\KnowledgeBaseViewModel.cs" />
     <Compile Include="Models\HelpTabViewModel.cs" />
+    <Compile Include="Models\KnowledgeBaseViewModel2.cs" />
     <Compile Include="Models\TeamViewModel.cs" />
     <Compile Include="Models\WelcomeMessageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -331,6 +332,7 @@
     <Content Include="Views\Home\_HelpTab.cshtml" />
     <Content Include="Views\Shared\_Spinner.cshtml" />
     <Content Include="Views\Home\_FeedbackTeam.cshtml" />
+    <Content Include="Views\Home\_KnowledgeBase2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx">

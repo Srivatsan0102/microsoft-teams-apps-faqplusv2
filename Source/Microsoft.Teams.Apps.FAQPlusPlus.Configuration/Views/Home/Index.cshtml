@@ -39,14 +39,22 @@
         <div class="col-lg-12 marginBetweenView">
             <hr />
         </div>
-            <div class="col-lg-12">
-                <div class="col-lg-8">
-                    @Html.Partial("~/Views/Home/_FeedbackTeam.cshtml")
-                </div>
+        <div class="col-lg-12">
+            <div class="col-lg-8">
+                @Html.Partial("~/Views/Home/_FeedbackTeam.cshtml")
             </div>
         </div>
+        <div class="col-lg-12 marginBetweenView">
+            <hr />
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-8">
+                @Html.Partial("~/Views/Home/_KnowledgeBase2.cshtml")
+            </div>
+        </div>
+    </div>
 
-        <script type="text/javascript">
+    <script type="text/javascript">
     $(function () {
         //Display team id if its saved if yes then perform edit UI changes
         $.ajax({
@@ -63,7 +71,7 @@
             }
         });
 
-        
+
         //Display feedback team id if its saved if yes then perform edit UI changes
         $.ajax({
             type: "GET",
@@ -91,6 +99,21 @@
             },
             error: function (error) {
                 saveFailureIconAndText("knowledgeBaseStorageStatusIcon", "knowledgeBaseStorageStatusMessage", "Unable to display knowledge base id due to HTTP: " + error.status + ", " + error.statusText);
+            }
+        });
+
+        //Display the second knowledgeBase id if its saved if yes then perform edit UI changes
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetSavedKnowledgeBaseIdAsync2")',
+            success: function (result) {
+                if (result != "") {                //Display the default UI when no knowledge id results are available for display
+                    $(".knowledgeBaseIdTextBox2").val(result);
+                    toggleToEdit("knowledgeBase2");
+                }
+            },
+            error: function (error) {
+                saveFailureIconAndText("knowledgeBase2StorageStatusIcon", "knowledgeBase2StorageStatusMessage", "Unable to display knowledge base id due to HTTP: " + error.status + ", " + error.statusText);
             }
         });
 
@@ -189,4 +212,4 @@
     $(document).ajaxStop(function () {
         $("#spinner").hide();
     });
-        </script>
+    </script>
