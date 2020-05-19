@@ -18,7 +18,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
     public class MultipleKBCard
     {
         private readonly IConfigurationDataProvider configurationPovider;
-        private readonly IQnAMakerClient qnaMakerClient;
+        private IQnAMakerClient qnaMakerClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultipleKBCard"/> class.

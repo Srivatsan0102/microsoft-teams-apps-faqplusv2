@@ -94,7 +94,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         private readonly IQnaServiceProvider qnaServiceProvider;
         private readonly IQnAMakerClient qnaMakerClient;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FaqPlusPlusBot"/> class.
         /// </summary>
@@ -109,6 +108,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="knowledgeBaseSearchService">KnowledgeBaseSearchService dependency injection.</param>
         /// <param name="optionsAccessor">A set of key/value application configuration properties for FaqPlusPlus bot.</param>
         /// <param name="logger">Instance to send logs to the Application Insights service.</param>
+        /// <param name="qnAMakerClient">qnaMakerClient dependency injection</param>
         public FaqPlusPlusBot(
             Common.Providers.IConfigurationDataProvider configurationProvider,
             MicrosoftAppCredentials microsoftAppCredentials,
@@ -120,7 +120,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             IMemoryCache memoryCache,
             IKnowledgeBaseSearchService knowledgeBaseSearchService,
             IOptionsMonitor<BotSettings> optionsAccessor,
-            ILogger<FaqPlusPlusBot> logger
+            ILogger<FaqPlusPlusBot> logger,
+            IQnAMakerClient qnAMakerClient
             )
         {
             this.configurationProvider = configurationProvider;
@@ -135,6 +136,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             this.accessCache = memoryCache;
             this.logger = logger;
             this.accessCacheExpiryInDays = this.options.AccessCacheExpiryInDays;
+            this.qnaMakerClient = qnAMakerClient;
 
             if (this.accessCacheExpiryInDays <= 0)
             {
