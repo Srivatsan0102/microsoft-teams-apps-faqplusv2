@@ -815,12 +815,13 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
                     break;
 
+                    /*
                 case "Choose Bot":
                     this.logger.LogInformation("Selecting knowledge base");
                     Attachment newCard = new MultipleKBCard(this.configurationProvider, this.qnaMakerClient).GetCard("Select your KB bot from the following choices!");
                     await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
                     break;
-
+                    */
                 default:
                     this.logger.LogInformation("Sending input to QnAMaker");
                     await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
@@ -963,7 +964,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     }
 
                     break;
-
+                    /*
                 case "KB 1":
                     this.logger.LogInformation("You have selected KB 1");
                     var knowledgebaseId1 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
@@ -979,7 +980,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await this.configurationProvider.UpsertEntityAsync(knowledgebaseId2, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
                     await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB2!")).ConfigureAwait(false); // To be modified to a card.
                     break;
-
+                    */
                 default:
                     this.logger.LogInformation($"Unexpected text in submit payload: {message.Text}", SeverityLevel.Warning);
                     break;
