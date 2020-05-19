@@ -87,7 +87,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 {
                     new AdaptiveSubmitAction
                     {
-                        Title = name1,
+                        Title = "kb 1",
                         Data = new TeamsAdaptiveSubmitActionData
                         {
                             MsTeams = new CardAction
@@ -100,7 +100,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                     },
                     new AdaptiveSubmitAction
                     {
-                        Title = name2,
+                        Title = "kb 2",
                         Data = new TeamsAdaptiveSubmitActionData
                         {
                             MsTeams = new CardAction
