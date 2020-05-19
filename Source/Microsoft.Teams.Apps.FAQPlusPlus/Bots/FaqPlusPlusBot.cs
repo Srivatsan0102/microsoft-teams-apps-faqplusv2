@@ -108,7 +108,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="knowledgeBaseSearchService">KnowledgeBaseSearchService dependency injection.</param>
         /// <param name="optionsAccessor">A set of key/value application configuration properties for FaqPlusPlus bot.</param>
         /// <param name="logger">Instance to send logs to the Application Insights service.</param>
-        /// <param name="qnAMakerClient">qnaMakerClient dependency injection</param>
         public FaqPlusPlusBot(
             Common.Providers.IConfigurationDataProvider configurationProvider,
             MicrosoftAppCredentials microsoftAppCredentials,
@@ -120,8 +119,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             IMemoryCache memoryCache,
             IKnowledgeBaseSearchService knowledgeBaseSearchService,
             IOptionsMonitor<BotSettings> optionsAccessor,
-            ILogger<FaqPlusPlusBot> logger,
-            IQnAMakerClient qnAMakerClient
+            ILogger<FaqPlusPlusBot> logger
             )
         {
             this.configurationProvider = configurationProvider;
@@ -136,7 +134,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             this.accessCache = memoryCache;
             this.logger = logger;
             this.accessCacheExpiryInDays = this.options.AccessCacheExpiryInDays;
-            this.qnaMakerClient = qnAMakerClient;
 
             if (this.accessCacheExpiryInDays <= 0)
             {
@@ -982,13 +979,13 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     }
 
                     break;
-                case "KB 1":
+                case "kb 1":
                     this.logger.LogInformation("You have selected KB 1");
                     var knowledgebaseId1 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
                     await this.configurationProvider.UpsertEntityAsync(knowledgebaseId1, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
                     await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB1!")).ConfigureAwait(false); // To be modified to a card.
                     break;
-                case "KB 2":
+                case "kb 2":
                     this.logger.LogInformation("You have selected KB 2");
                     var knowledgebaseId2 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId2).ConfigureAwait(false);
                     await this.configurationProvider.UpsertEntityAsync(knowledgebaseId2, ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);

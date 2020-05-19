@@ -93,8 +93,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                             MsTeams = new CardAction
                             {
                               Type = ActionTypes.MessageBack,
-                              DisplayText = name1,
-                              Text = "KB 1",
+                              DisplayText = "kb 1",
+                              Text = "kb 1",
                             },
                         },
                     },
@@ -106,8 +106,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                             MsTeams = new CardAction
                             {
                               Type = ActionTypes.MessageBack,
-                              DisplayText = name2,
-                              Text = "KB 2",
+                              DisplayText = "kb 2",
+                              Text = "kb 2",
                             },
                         },
                     },
