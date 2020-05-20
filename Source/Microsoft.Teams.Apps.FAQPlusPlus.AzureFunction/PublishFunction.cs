@@ -11,6 +11,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.AzureFunction
     using Microsoft.Extensions.Logging;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers;
+    using Microsoft.Teams.Apps.FAQPlusPlus.Common.Models;
 
     /// <summary>
     /// Azure Function to publish QnA Maker knowledge base.
@@ -48,7 +49,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.AzureFunction
         {
             try
             {
-                var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(Constants.KnowledgeBaseEntityId).ConfigureAwait(false);
+                var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
                 bool toBePublished = await this.qnaServiceProvider.GetPublishStatusAsync(knowledgeBaseId).ConfigureAwait(false);
                 log.LogInformation("To be published - " + toBePublished);
                 log.LogInformation("knowledge base id - " + knowledgeBaseId);
