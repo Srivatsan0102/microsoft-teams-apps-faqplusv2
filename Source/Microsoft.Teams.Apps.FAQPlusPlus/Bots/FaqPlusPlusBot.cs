@@ -854,10 +854,9 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB2!")).ConfigureAwait(false); // To be modified to a card.
                     break;
                 default:
-                    this.logger.LogInformation("Selecting knowledge base");
-                    Attachment newCard = new MultipleKBCard(this.configurationProvider, this.qnaMakerClient).GetCard("Select your KB bot from the following choices!");
-                    await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
                     this.logger.LogInformation("Sending input to QnAMaker");
+                    Attachment newCard = new MultipleKBCard(this.configurationProvider, this.qnaMakerClient).GetCard("Select your KB bot from the following choices!");
+                    // await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
                     await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
                     break;
             }
