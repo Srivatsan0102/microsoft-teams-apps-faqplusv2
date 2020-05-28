@@ -856,7 +856,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 default:
                     this.logger.LogInformation("Sending input to QnAMaker");
                     Attachment newCard = new MultipleKBCard(this.configurationProvider, this.qnaMakerClient).GetCard("Select your KB bot from the following choices!");
-                    // await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
+                    await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
                     await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
                     break;
             }
