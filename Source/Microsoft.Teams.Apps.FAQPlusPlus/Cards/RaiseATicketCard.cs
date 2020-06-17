@@ -30,7 +30,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 {
                     new AdaptiveTextBlock
                     {
-                        Text = @"<html>" + serviceNowText + @"</html>",
+                        Text = uri.AbsoluteUri,
                         Wrap = true,
                     },
                 },
