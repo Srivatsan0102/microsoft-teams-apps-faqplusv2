@@ -23,14 +23,14 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         public static Attachment GetCard()
         {
             Uri uri = new Uri("http://www.tcs.com");
-            string serviceNowText = @"<a href = " + uri.AbsoluteUri + @" > Click here to access the service now portal! </a>";
+            string serviceNowText = $@"<a href = {uri.AbsoluteUri}> Click here to access the service now portal! </a>";
             AdaptiveCard raiseATicketCard = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
                 Body = new List<AdaptiveElement>
                 {
                     new AdaptiveTextBlock
                     {
-                        Text = uri.AbsoluteUri,
+                        Text = serviceNowText.Trim(),
                         Wrap = true,
                     },
                 },
