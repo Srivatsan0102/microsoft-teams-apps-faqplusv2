@@ -51,29 +51,14 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 {
                     new AdaptiveSubmitAction
                     {
-                        Title = Strings.AskAnExpertButtonText,
+                        Title = "Raise a Ticket",
                         Data = new ResponseCardPayload
                         {
                             MsTeams = new CardAction
                             {
                                 Type = ActionTypes.MessageBack,
-                                DisplayText = Strings.AskAnExpertDisplayText,
-                                Text = Constants.AskAnExpert,
-                            },
-                            UserQuestion = userQuestion,
-                            KnowledgeBaseAnswer = answer,
-                        },
-                    },
-                    new AdaptiveSubmitAction
-                    {
-                        Title = Strings.ShareFeedbackButtonText,
-                        Data = new ResponseCardPayload
-                        {
-                            MsTeams = new CardAction
-                            {
-                                Type = ActionTypes.MessageBack,
-                                DisplayText = Strings.ShareFeedbackDisplayText,
-                                Text = Constants.ShareFeedback,
+                                DisplayText = "Raise a Ticket",
+                                Text = Constants.RaiseATicket,
                             },
                             UserQuestion = userQuestion,
                             KnowledgeBaseAnswer = answer,

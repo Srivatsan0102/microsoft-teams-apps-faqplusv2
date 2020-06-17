@@ -29,7 +29,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 {
                     new AdaptiveTextBlock
                     {
-                        Text = Strings.CustomMessage,
+                        Text = "I didn't find a matching answer for this question. Do you want to raise a ticket?",
                         Wrap = true,
                     },
                 },
@@ -37,14 +37,14 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 {
                     new AdaptiveSubmitAction
                     {
-                        Title = Strings.AskAnExpertButtonText,
+                        Title = "Raise a Ticket",
                         Data = new ResponseCardPayload
                         {
                             MsTeams = new CardAction
                             {
                                 Type = ActionTypes.MessageBack,
-                                DisplayText = Strings.AskAnExpertDisplayText,
-                                Text = Constants.AskAnExpert,
+                                DisplayText = "Raise a Ticket",
+                                Text = Constants.RaiseATicket,
                             },
                             UserQuestion = userQuestion,
                         },
