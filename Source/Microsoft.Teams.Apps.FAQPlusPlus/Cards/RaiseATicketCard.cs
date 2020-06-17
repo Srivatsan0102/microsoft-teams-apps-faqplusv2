@@ -30,7 +30,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 {
                     new AdaptiveTextBlock
                     {
-                        Text = "Raise a ticket here!",
+                        Text = serviceNowText,
                         Wrap = true,
                     },
                 },
