@@ -7,6 +7,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
     using System;
     using System.Collections.Generic;
     using AdaptiveCards;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
     using Microsoft.Bot.Schema;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common.Models;
     using Microsoft.Teams.Apps.FAQPlusPlus.Properties;
@@ -23,7 +24,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         public static Attachment GetCard()
         {
             Uri uri = new Uri("http://www.tcs.com");
-            string serviceNowText = "<a href=" + uri.AbsoluteUri + ">Click here!</a>";
+            string serviceNowText = $@"<html>
+                                       <head></head>
+                                       <body>
+                                       <div><a href = {uri.AbsoluteUri} > Click here to access the service now portal! </a></div>
+                                       </body>
+                                       </html>";
             AdaptiveCard raiseATicketCard = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
                 Body = new List<AdaptiveElement>
