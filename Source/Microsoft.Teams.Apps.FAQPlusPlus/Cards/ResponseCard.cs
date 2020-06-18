@@ -4,6 +4,7 @@
 
 namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
 {
+    using System;
     using System.Collections.Generic;
     using AdaptiveCards;
     using Microsoft.Bot.Schema;
@@ -26,6 +27,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         /// <returns>Response card.</returns>
         public static Attachment GetCard(string question, string answer, string userQuestion)
         {
+            Uri uri = new Uri("http://www.tcs.com");
+
             AdaptiveCard responseCard = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
                 Body = new List<AdaptiveElement>
@@ -64,6 +67,11 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                             KnowledgeBaseAnswer = answer,
                         },
                     },
+                    /*new AdaptiveOpenUrlAction
+                    {
+                        Title = "Raise a Ticket",
+                        Url = uri,
+                    },*/
                 },
             };
 

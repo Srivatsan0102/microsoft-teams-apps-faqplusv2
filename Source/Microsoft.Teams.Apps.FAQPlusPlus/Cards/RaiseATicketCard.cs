@@ -10,6 +10,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
     using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
     using Microsoft.AspNetCore.Rewrite.Internal.IISUrlRewrite;
     using Microsoft.Bot.Schema;
+    using Microsoft.Teams.Apps.FAQPlusPlus.Common;
     using Microsoft.Teams.Apps.FAQPlusPlus.Common.Models;
     using Microsoft.Teams.Apps.FAQPlusPlus.Properties;
 
@@ -19,33 +20,42 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
     public static class RaiseATicketCard
     {
 
-        public static string getURL()
-        {
-            Uri uri = new Uri("http://www.tcs.com");
-            var serviceNowText = $@"<html>
-                                       <head></head>
-                                       <body>
-                                       <div><a href = {uri.AbsoluteUri} > Click here to access the service now portal! </a></div>
-                                       </body>
-                                       </html>";
-
-            return serviceNowText.Trim();
-        }
-
         /// <summary>
         /// This method will construct the card for raise a ticket bot menu.
         /// </summary>
         /// <returns>Raise a Ticket card.</returns>
         public static Attachment GetCard()
         {
+            Uri uri = new Uri("http://www.tcs.com");
             AdaptiveCard raiseATicketCard = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
                 Body = new List<AdaptiveElement>
                 {
                     new AdaptiveTextBlock
                     {
-                        Text = getURL(),
+                        Text = "Click on the button to enter the service now portal",
                         Wrap = true,
+                    },
+                },
+                Actions = new List<AdaptiveAction>
+                {
+                    new AdaptiveSubmitAction
+                    {
+                        Title = "Raise a Ticket",
+                        Data = new ResponseCardPayload
+                        {
+                            MsTeams = new CardAction
+                            {
+                                Type = ActionTypes.MessageBack,
+                                DisplayText = Constants.RaiseATicket,
+                                Text = Constants.RaiseATicket,
+                            },
+                        },
+                    },
+                    new AdaptiveOpenUrlAction
+                    {
+                        Title = "Raise a Ticket",
+                        Url = uri,
                     },
                 },
             };
