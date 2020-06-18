@@ -52,26 +52,11 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 },
                 Actions = new List<AdaptiveAction>
                 {
-                    new AdaptiveSubmitAction
+                         new AdaptiveOpenUrlAction
                     {
-                        Title = "Raise a Ticket",
-                        Data = new ResponseCardPayload
-                        {
-                            MsTeams = new CardAction
-                            {
-                                Type = ActionTypes.MessageBack,
-                                DisplayText = Constants.RaiseATicket,
-                                Text = Constants.RaiseATicket,
-                            },
-                            UserQuestion = userQuestion,
-                            KnowledgeBaseAnswer = answer,
-                        },
-                    },
-                    /*new AdaptiveOpenUrlAction
-                    {
-                        Title = "Raise a Ticket",
+                        Title = "Service Now Portal",
                         Url = uri,
-                    },*/
+                    },
                 },
             };
 

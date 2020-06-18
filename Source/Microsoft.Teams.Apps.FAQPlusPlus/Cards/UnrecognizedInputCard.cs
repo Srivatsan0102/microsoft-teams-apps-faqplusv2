@@ -4,6 +4,7 @@
 
 namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
 {
+    using System;
     using System.Collections.Generic;
     using AdaptiveCards;
     using Microsoft.Bot.Schema;
@@ -23,6 +24,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         /// <returns>UnrecognizedInput Card.</returns>
         public static Attachment GetCard(string userQuestion)
         {
+            Uri uri = new Uri("http://www.tcs.com");
             AdaptiveCard unrecognizedInputCard = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
                 Body = new List<AdaptiveElement>
@@ -35,19 +37,10 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
                 },
                 Actions = new List<AdaptiveAction>
                 {
-                    new AdaptiveSubmitAction
+                         new AdaptiveOpenUrlAction
                     {
-                        Title = "Raise a Ticket",
-                        Data = new ResponseCardPayload
-                        {
-                            MsTeams = new CardAction
-                            {
-                                Type = ActionTypes.MessageBack,
-                                DisplayText = "Raise a Ticket",
-                                Text = Constants.RaiseATicket,
-                            },
-                            UserQuestion = userQuestion,
-                        },
+                        Title = "Service Now Portal",
+                        Url = uri,
                     },
                 },
             };
