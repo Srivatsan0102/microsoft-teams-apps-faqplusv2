@@ -783,6 +783,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
             switch (text)
             {
+                //Eliminating ask an expert and share feedback option.
                 /*
                 case Constants.AskAnExpert:
                     this.logger.LogInformation("Sending user ask an expert card");
