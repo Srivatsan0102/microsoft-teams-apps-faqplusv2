@@ -27,6 +27,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.AzureFunction
         private readonly IKnowledgeBaseSearchService knowledgeBaseSearchService;
         public ITurnContext<IInvokeActivity> TurnContext;
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PublishFunction"/> class.
         /// </summary>
@@ -42,6 +43,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.AzureFunction
             this.searchServiceDataProvider = searchServiceDataProvider;
             this.knowledgeBaseSearchService = knowledgeBaseSearchService;
         }
+
+        
 
         /// <summary>
         /// Function to get and publish QnA Maker knowledge base.
@@ -70,23 +73,23 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.AzureFunction
 
                 // This changes the way the ME is populated for the knowledge base, so change the kb to expertID.
                 var expertKnowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync("ExpertKnowledgeBase").ConfigureAwait(false);
-                string expertTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
-                if (this.TurnContext != null && teamsChannelData?.Team?.Id == expertTeamId)
-                {
+                //string expertTeamId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
+                //if (this.TurnContext != null && teamsChannelData?.Team?.Id == expertTeamId)
+                //{
                     log.LogInformation("Setup azure search data");
                     await this.searchServiceDataProvider.SetupAzureSearchDataAsync(expertKnowledgeBaseId).ConfigureAwait(false);
 
                     log.LogInformation("Update azure search service");
                     await this.knowledgeBaseSearchService.InitializeSearchServiceDependencyAsync().ConfigureAwait(false);
-                }
-                else
+                //}
+                /*else
                 {
                     log.LogInformation("Setup azure search data");
                     await this.searchServiceDataProvider.SetupAzureSearchDataAsync(knowledgeBaseId).ConfigureAwait(false);
 
                     log.LogInformation("Update azure search service");
                     await this.knowledgeBaseSearchService.InitializeSearchServiceDependencyAsync().ConfigureAwait(false);
-                }
+                }*/
             }
             catch (Exception ex)
             {
