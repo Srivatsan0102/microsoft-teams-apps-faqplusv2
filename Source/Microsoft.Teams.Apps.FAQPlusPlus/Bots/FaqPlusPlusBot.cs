@@ -752,7 +752,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             {
                 // Bot was added to a team
                 this.logger.LogInformation($"Bot added to team {activity.Conversation.Id}");
-
+                var expertKnowledgebaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
+                await this.configurationProvider.UpsertEntityAsync(expertKnowledgebaseId, "ExpertKnowledgeBase").ConfigureAwait(false);
                 var teamDetails = ((JObject)turnContext.Activity.ChannelData).ToObject<TeamsChannelData>();
                 var botDisplayName = turnContext.Activity.Recipient.Name;
                 var teamWelcomeCardAttachment = WelcomeTeamCard.GetCard();
