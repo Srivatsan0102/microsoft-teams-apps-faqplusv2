@@ -74,7 +74,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
         /// <returns>Operation state as task.</returns>
         public async Task<Operation> AddQnaAsync(string question, string combinedDescription, string createdBy, string conversationId, string activityReferenceId)
         {
-            var knowledgeBase = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+            // Used for adding new question to qnamaker. Change to expertkb to reflect new usecase.
+            var knowledgeBase = await this.configurationProvider.GetSavedEntityDetailAsync("ExpertKnowledgeBase").ConfigureAwait(false);
 
             // Update knowledgebase.
             return await this.qnaMakerClient.Knowledgebase.UpdateAsync(knowledgeBase, new UpdateKbOperationDTO
@@ -114,7 +115,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
         /// <returns>Perfomed action task.</returns>
         public async Task UpdateQnaAsync(int questionId, string answer, string updatedBy, string updatedQuestion, string question)
         {
-            var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+            // Used for updating a question to qnamaker. Change to expertkb to reflect new usecase.
+            var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync("ExpertKnowledgeBase").ConfigureAwait(false);
             var questions = default(UpdateQnaDTOQuestions);
             if (!string.IsNullOrEmpty(updatedQuestion?.Trim()))
             {
@@ -163,7 +165,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Providers
         /// <returns>Perfomed action task.</returns>
         public async Task DeleteQnaAsync(int questionId)
         {
-            var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.MainKnowledgeBase).ConfigureAwait(false);
+            // Used for deleting a question to qnamaker. Change to expertkb to reflect new usecase.
+            var knowledgeBaseId = await this.configurationProvider.GetSavedEntityDetailAsync("ExpertKnowledgeBase").ConfigureAwait(false);
 
             // to delete a question and answer based on id.
             await this.qnaMakerClient.Knowledgebase.UpdateAsync(knowledgeBaseId, new UpdateKbOperationDTO

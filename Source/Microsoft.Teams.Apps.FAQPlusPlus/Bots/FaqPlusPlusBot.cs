@@ -7,8 +7,10 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.ApplicationInsights.DataContracts;
@@ -32,7 +34,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using ErrorResponseException = Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models.ErrorResponseException;
-
 
     /// <summary>
     /// Class that handles the teams activity of Faq Plus bot and messaging extension.
@@ -75,6 +76,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         private const string ChangeStatus = "change status";
 
         private static string question;
+
         /// <summary>
         /// Represents a set of key/value application configuration properties for FaqPlusPlus bot.
         /// </summary>
@@ -395,25 +397,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
                 if (turnContext != null && teamsChannelData?.Team?.Id == expertTeamId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
                 {
-                    var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
-                    var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
-
-                    return new MessagingExtensionResponse
-                    {
-                        ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
-                    };
-                }
-                else if (teamsChannelData.Team.Id.Equals("19:e1f86d6b537d40ef86cdc187613659a6@thread.tacv2"))
-                {
-                    /* return new MessagingExtensionResponse
-                     {
-                         ComposeExtension = new MessagingExtensionResult
-                         {
-                             Text = "Welcome to the Share feedback messaging extension!",
-                             Type = "message",
-                         },
-                     }; */
-
                     var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
                     var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
 
@@ -925,6 +908,31 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     case Constants.NoCommand:
                         return;
 
+                    case Constants.ChooseBot:
+                        this.logger.LogInformation("Selecting knowledge base");
+                        Attachment newCard = new MultipleKBCard(this.configurationProvider, this.qnaMakerClient).GetCard("Select your KB bot from the following choices!");
+                        await turnContext.SendActivityAsync(MessageFactory.Attachment(newCard)).ConfigureAwait(false);
+                        break;
+
+                    case Constants.KB1:
+                        this.logger.LogInformation("You have selected KB 1");
+
+                        var knowledgebaseId1 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId).ConfigureAwait(false);
+                        await this.configurationProvider.UpsertEntityAsync(knowledgebaseId1, "ExpertKnowledgeBase").ConfigureAwait(false);
+                        await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB1!")).ConfigureAwait(false); // To be modified to a card.
+
+                        // await this.GetQuestionAnswerReplyAsync(turnContext, question).ConfigureAwait(false);
+                        break;
+                    case Constants.KB2:
+                        this.logger.LogInformation("You have selected KB 2");
+
+                        var knowledgebaseId2 = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.KnowledgeBaseId2).ConfigureAwait(false);
+                        await this.configurationProvider.UpsertEntityAsync(knowledgebaseId2, "ExpertKnowledgeBase").ConfigureAwait(false);
+                        await turnContext.SendActivityAsync(MessageFactory.Text("You've selected KB2!")).ConfigureAwait(false); // To be modified to a card.
+
+                        // await this.GetQuestionAnswerReplyAsync(turnContext, question).ConfigureAwait(false);
+                        break;
+
                     default:
                         this.logger.LogInformation("Unrecognized input in channel");
                         await turnContext.SendActivityAsync(MessageFactory.Attachment(UnrecognizedTeamInputCard.GetCard())).ConfigureAwait(false);
@@ -1007,7 +1015,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     }
 
                     break;
-               
 
                 default:
                     this.logger.LogInformation($"Unexpected text in submit payload: {message.Text}", SeverityLevel.Warning);
@@ -1121,7 +1128,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             {
                 case ChangeTicketStatusPayload.ReopenAction:
                     smeNotification = string.Format(CultureInfo.InvariantCulture, Strings.SMEOpenedStatus, message.From.Name);
-
                     userNotification = MessageFactory.Attachment(new UserNotificationCard(ticket).ToAttachment(Strings.ReopenedTicketUserNotification, message.LocalTimestamp));
                     userNotification.Summary = Strings.ReopenedTicketUserNotification;
                     break;
