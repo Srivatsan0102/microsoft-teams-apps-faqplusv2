@@ -783,27 +783,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
             switch (text)
             {
-                //Eliminating ask an expert and share feedback option.
-                /*
-                case Constants.AskAnExpert:
-                    this.logger.LogInformation("Sending user ask an expert card");
-                    await turnContext.SendActivityAsync(MessageFactory.Attachment(AskAnExpertCard.GetCard())).ConfigureAwait(false);
-                    break;
-
-                case Constants.ShareFeedback:
-                    if (string.IsNullOrEmpty(await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.FeedbackTeamId).ConfigureAwait(false)))
-                    {
-                        this.logger.LogInformation("Feedback Team ID not registered yet.");
-                        await turnContext.SendActivityAsync(MessageFactory.Text(Strings.FeedbackTeamUnregisteredMessage), cancellationToken).ConfigureAwait(false);
-                        break;
-                    }
-                    else
-                    {
-                        this.logger.LogInformation("Sending user feedback card");
-                        await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
-                        break;
-                    }
-                */
                 case Constants.TakeATour:
                     this.logger.LogInformation("Sending user tour card");
                     var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
@@ -925,39 +904,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
             switch (message?.Text)
             {
-                case Constants.AskAnExpert:
-                    this.logger.LogInformation("Sending user ask an expert card (from answer)");
-                    var askAnExpertPayload = ((JObject)message.Value).ToObject<ResponseCardPayload>();
-                    await turnContext.SendActivityAsync(MessageFactory.Attachment(AskAnExpertCard.GetCard(askAnExpertPayload))).ConfigureAwait(false);
-                    break;
-
-                case Constants.ShareFeedback:
-                    this.logger.LogInformation("Sending user share feedback card (from answer)");
-                    var shareFeedbackPayload = ((JObject)message.Value).ToObject<ResponseCardPayload>();
-                    await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard(shareFeedbackPayload))).ConfigureAwait(false);
-                    break;
-
-                case AskAnExpertCard.AskAnExpertSubmitText:
-                    this.logger.LogInformation("Received question for expert");
-                    newTicket = await AdaptiveCardHelper.AskAnExpertSubmitText(message, turnContext, cancellationToken, this.ticketsProvider).ConfigureAwait(false);
-                    if (newTicket != null)
-                    {
-                        smeTeamCard = new SmeTicketCard(newTicket).ToAttachment(message?.LocalTimestamp);
-                        userCard = new UserNotificationCard(newTicket).ToAttachment(Strings.NotificationCardContent, message?.LocalTimestamp);
-                    }
-
-                    break;
-
-                case ShareFeedbackCard.ShareFeedbackSubmitText:
-                    this.logger.LogInformation("Received app feedback");
-                    feedbackTeamCard = await AdaptiveCardHelper.ShareFeedbackSubmitText(message, turnContext, cancellationToken).ConfigureAwait(false);
-                    if (feedbackTeamCard != null)
-                    {
-                        await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
-                    }
-
-                    break;
-
                 default:
                     this.logger.LogInformation($"Unexpected text in submit payload: {message.Text}", SeverityLevel.Warning);
                     break;
