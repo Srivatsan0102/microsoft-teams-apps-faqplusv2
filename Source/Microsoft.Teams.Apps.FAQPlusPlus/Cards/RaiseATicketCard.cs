@@ -26,7 +26,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         /// <returns>Raise a Ticket card.</returns>
         public static Attachment GetCard()
         {
-            Uri uri = new Uri("http://www.tcs.com");
+            Uri uri = new Uri("https://utsw.service-now.com/");
             AdaptiveCard raiseATicketCard = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
                 Body = new List<AdaptiveElement>

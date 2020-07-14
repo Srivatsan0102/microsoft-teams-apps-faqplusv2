@@ -27,7 +27,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
         /// <returns>Response card.</returns>
         public static Attachment GetCard(string question, string answer, string userQuestion)
         {
-            Uri uri = new Uri("http://www.tcs.com");
+            Uri uri = new Uri("https://utsw.service-now.com/");
 
             AdaptiveCard responseCard = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {

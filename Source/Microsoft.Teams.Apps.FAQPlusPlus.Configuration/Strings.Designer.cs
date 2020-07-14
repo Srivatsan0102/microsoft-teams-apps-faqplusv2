@@ -61,13 +61,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hi, I&apos;m your friendly Q&amp;A bot. You can ask me questions, and I&apos;ll do my best to answer. If I can&apos;t help, I&apos;ll connect you to an expert.
+        ///   Looks up a localized string similar to Hi, I&apos;m your friendly Q&amp;A bot. You can ask me questions, and I&apos;ll do my best to answer. If I can&apos;t help, you can raise a ticket in the service now portal.
         ///
         ///My key features:
         ///
         ///* Ask a question, get an answer
-        ///* Ask an expert
-        ///* Share feedback.
+        ///* Raise a ticket in the service now portal.
         /// </summary>
         public static string DefaultHelpTabText {
             get {
@@ -76,7 +75,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hi, I&apos;m your friendly Q&amp;A bot. You can ask me questions, and I&apos;ll do my best to answer. If I can&apos;t help, I&apos;ll connect you to an expert.
+        ///   Looks up a localized string similar to Hi, I&apos;m your friendly Q&amp;A bot. You can ask me questions, and I&apos;ll do my best to answer. If I can&apos;t help, you can raise a ticket in the service now portal.
         ///
         ///You can ask the following questions:
         ///* How do you work?
