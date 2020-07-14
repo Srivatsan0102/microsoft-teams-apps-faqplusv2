@@ -709,7 +709,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If I can&apos;t answer your question, select raise a ticket option to access the service now portal to raise a ticket based on your question asked..
+        ///   Looks up a localized string similar to If I can&apos;t answer your question, you can access the service now portal to raise a ticket based on your question asked..
         /// </summary>
         public static string RaiseATicketContentText {
             get {

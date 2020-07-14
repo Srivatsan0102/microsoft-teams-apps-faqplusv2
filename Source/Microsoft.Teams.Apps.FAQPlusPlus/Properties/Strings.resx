@@ -615,7 +615,7 @@ I am your friendly share feedback bot! I will take your feedback and send it to 
     <comment>String for the raise a ticket tour carousel.</comment>
   </data>
   <data name="RaiseATicketContentText" xml:space="preserve">
-    <value>If I can't answer your question, select raise a ticket option to access the service now portal to raise a ticket based on your question asked.</value>
+    <value>If I can't answer your question, you can access the service now portal to raise a ticket based on your question asked.</value>
     <comment>Text to appear on the raise a ticket tour carousel card.</comment>
   </data>
 </root>
