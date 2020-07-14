@@ -610,4 +610,12 @@ I am your friendly share feedback bot! I will take your feedback and send it to 
     <value>I'm sorry, I don't think I can find the Team ID for submitting Feedback.</value>
     <comment>If the user asks for feedback when the feedback team has not been configured, the bot will return this message.</comment>
   </data>
+  <data name="RaiseATicketContent" xml:space="preserve">
+    <value>Raise a Ticket</value>
+    <comment>String for the raise a ticket tour carousel.</comment>
+  </data>
+  <data name="RaiseATicketContentText" xml:space="preserve">
+    <value>If I can't answer your question, select raise a ticket option to access the service now portal to raise a ticket based on your question asked.</value>
+    <comment>Text to appear on the raise a ticket tour carousel card.</comment>
+  </data>
 </root>

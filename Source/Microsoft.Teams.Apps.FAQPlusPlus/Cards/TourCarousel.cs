@@ -37,6 +37,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Cards
             return new List<Attachment>()
             {
                 GetCard(Strings.FunctionCardText1, Strings.FunctionCardText2, appBaseUri + "/content/Askaquestion.png"),
+                GetCard(Strings.RaiseATicketContent,Strings.RaiseATicketContentText,appBaseUri + "/content/Ticketsystem.png"),
             };
         }
 
